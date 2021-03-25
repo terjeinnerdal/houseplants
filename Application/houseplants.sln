@@ -3,15 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "houseplants", "houseplants\houseplants.csproj", "{A0C229D3-6418-41B4-9865-E75116F832A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HousePlants", "houseplants\HousePlants.csproj", "{A0C229D3-6418-41B4-9865-E75116F832A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{C5B2DE8E-30B4-4277-BDEE-001AC82EEF14}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.md = TODO.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HousePlants.Domain", "HousePlants.Domain\HousePlants.Domain.csproj", "{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1808FCD7-A59A-461F-8648-909D96BCA52A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{19218D24-2B6A-4522-B529-4B255DE82B25}"
+	ProjectSection(SolutionItems) = preProject
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+	EndProjectSection
 EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {11A23A0A-206A-4827-BBE8-CE44979FDDCE}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -33,5 +45,26 @@ Global
 		{A0C229D3-6418-41B4-9865-E75116F832A5}.Release|x64.Build.0 = Release|Any CPU
 		{A0C229D3-6418-41B4-9865-E75116F832A5}.Release|x86.ActiveCfg = Release|Any CPU
 		{A0C229D3-6418-41B4-9865-E75116F832A5}.Release|x86.Build.0 = Release|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Debug|x64.Build.0 = Debug|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Release|x64.ActiveCfg = Release|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Release|x64.Build.0 = Release|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B8F0599-1196-4AB7-9539-8B3DC31ED77D}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{19218D24-2B6A-4522-B529-4B255DE82B25} = {1808FCD7-A59A-461F-8648-909D96BCA52A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11A23A0A-206A-4827-BBE8-CE44979FDDCE}
 	EndGlobalSection
 EndGlobal

@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EntityFrameworkCore.SqlServer.NodaTime.Extensions;
+using HousePlants.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace aspnet_core_dotnet_core
+namespace HousePlants
 {
     public class Startup
     {
@@ -32,10 +31,22 @@ namespace aspnet_core_dotnet_core
             });
 
             // Enable Application Insights for telemetries. Update the instrumentation key in 'appsettings.json' to transfer the events.
-            services.AddApplicationInsightsTelemetry();
-            services.AddApplicationInsightsKubernetesEnricher();
+            //services.AddApplicationInsightsTelemetry();
+            //services.AddApplicationInsightsKubernetesEnricher();
 
             services.AddRazorPages();
+
+            //services.AddDbContext<HousePlantsContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("HousePlantsContext")));
+
+            services.AddDbContext<HousePlantsContext>(options =>
+            {
+                var connectionStringBuilder =
+                    new SqlConnectionStringBuilder(Configuration.GetConnectionString("HousePlantsContext"));
+
+                options.UseSqlServer(
+                    connectionStringBuilder.ConnectionString, builder => builder.UseNodaTime());
+            }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

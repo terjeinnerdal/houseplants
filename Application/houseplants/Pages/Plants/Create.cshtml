@@ -1,0 +1,62 @@
+﻿@page
+@using HousePlants.Domain.Models
+@model HousePlants.Pages.Plants.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Plant</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CreatePlantModel.CommonName" class="control-label"></label>
+                <input asp-for="CreatePlantModel.CommonName" class="form-control" />
+                <span asp-validation-for="CreatePlantModel.CommonName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatePlantModel.LatinName" class="control-label"></label>
+                <input asp-for="CreatePlantModel.LatinName" class="form-control" />
+                <span asp-validation-for="CreatePlantModel.LatinName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatePlantModel.Description" class="control-label"></label>
+                <textarea asp-for="CreatePlantModel.Description" class="form-control"></textarea>
+                <span asp-validation-for="CreatePlantModel.Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CreatePlantModel.AquiredDate" class="control-label"></label>
+                <input asp-for="CreatePlantModel.AquiredDate" class="form-control" />
+                <span asp-validation-for="CreatePlantModel.AquiredDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CreatePlantModel.LightRequirement" class="control-label"></label>
+                <select asp-for="CreatePlantModel.LightRequirement" asp-items="Html.GetEnumSelectList<LightRequirement>()" class="form-control"></select>
+                <span asp-validation-for="CreatePlantModel.LightRequirement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatePlantModel.WaterRequirement" class="control-label"></label>
+                <select asp-for="CreatePlantModel.WaterRequirement" asp-items="Html.GetEnumSelectList<WaterRequirement>()" class="form-control"></select>
+                <span asp-validation-for="CreatePlantModel.WaterRequirement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

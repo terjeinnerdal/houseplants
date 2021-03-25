@@ -1,0 +1,73 @@
+﻿@page
+@model HousePlants.Pages.Plants.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Plant</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.CommonName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.CommonName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.LatinName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.LatinName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.AquiredDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.AquiredDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.TerminationReason)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.TerminationReason)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.TerminationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.TerminationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.LightRequirement)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.LightRequirement)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.WaterRequirement)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.WaterRequirement)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Plant.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
