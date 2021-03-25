@@ -1,4 +1,5 @@
 ﻿using EntityFrameworkCore.SqlServer.NodaTime.Extensions;
+using FluentValidation.AspNetCore;
 using HousePlants.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace HousePlants
 {
@@ -30,11 +32,18 @@ namespace HousePlants
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+
+
             // Enable Application Insights for telemetries. Update the instrumentation key in 'appsettings.json' to transfer the events.
             //services.AddApplicationInsightsTelemetry();
             //services.AddApplicationInsightsKubernetesEnricher();
 
-            services.AddRazorPages();
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services.AddRazorPages().AddFluentValidation();
 
             //services.AddDbContext<HousePlantsContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("HousePlantsContext")));
@@ -62,6 +71,7 @@ namespace HousePlants
             }
 
             app.UseStaticFiles();
+            app.UseSerilogRequestLogging();
             app.UseCookiePolicy();
             app.UseRouting();
             app.UseAuthorization();

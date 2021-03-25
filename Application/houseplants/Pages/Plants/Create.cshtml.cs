@@ -2,50 +2,72 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using HousePlants.Data;
 using HousePlants.Domain.Models;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace HousePlants.Pages.Plants
 {
-    public class CreatePlant
+    public sealed class CreatePlantVM
     {
-        [StringLength(128)] public string CommonName { get; set; } = default!;
-        [StringLength(128)] public string? LatinName { get; set; }
-        [DataType(DataType.MultilineText)]
+        [Required, StringLength(128)] 
+        public string CommonName { get; set; }
+        [DataType(DataType.MultilineText), StringLength(20000)]
         public string Description { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Prompt = "When did you aquire the plant")]
-        public DateTime? AquiredDate { get; set; }
         public LightRequirement LightRequirement { get; set; }
         public WaterRequirement WaterRequirement { get; set; }
     }
 
+    //public class CreatePlantVMValidator : AbstractValidator<CreatePlant>
+    //{
+    //    public CreatePlantValidator()
+    //    {
+    //        RuleFor(p => p.CommonName).NotEmpty().MaximumLength(128);
+    //        RuleFor(p => p.Description).MaximumLength(20000);
+    //    }
+    //}
+
+    public class MapperProfile : Profile
+    {
+        public MapperProfile()
+        {
+            CreateMap<CreatePlantVM, Plant>();
+        }
+    }
+
+
+
     public class CreateModel : PageModel
     {
-        private readonly HousePlants.Data.HousePlantsContext _context;
+        private readonly ILogger<CreateModel> _logger;
+        private readonly HousePlantsContext _context;
         private readonly IMapper _mapper;
 
-        public CreateModel(HousePlants.Data.HousePlantsContext context)
+        public CreateModel(ILogger<CreateModel> logger, HousePlantsContext context, IMapper mapper)
         {
+            _logger = logger;
             _context = context;
+            _mapper = mapper;
         }
+
+        [BindProperty]
+        public CreatePlantVM CreatePlantVmModel { get; set; }
 
         public IActionResult OnGet()
         {
-            if(CreatePlantModel == null)
-                CreatePlantModel = new CreatePlant();
+            CreatePlantVmModel ??= new CreatePlantVM();
 
             return Page();
         }
 
-        [BindProperty]
-        public CreatePlant CreatePlantModel { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -55,9 +77,16 @@ namespace HousePlants.Pages.Plants
                 return Page();
             }
 
-            var plant = _mapper.Map<Plant>(CreatePlantModel);
+            var plant = _mapper.Map<Plant>(CreatePlantVmModel);
             await _context.Plants.AddAsync(plant);
             await _context.SaveChangesAsync();
+
+            var createdEvent = new
+            {
+                User = "tnnerdal", Event = "Created", Plant = CreatePlantVmModel.CommonName
+            };
+
+            _logger.LogInformation("Created new plant {@Plant}", createdEvent);
 
             return RedirectToPage("./Index");
         }

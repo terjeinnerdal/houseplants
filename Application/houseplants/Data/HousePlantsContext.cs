@@ -27,10 +27,8 @@ namespace HousePlants.Data
         }
 
         /// <summary>
-        /// Updates the Created and Modified fields.
+        /// Updates the Created and Modified timestamps for BaseEntity types.
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var entries = ChangeTracker.Entries().Where(e =>
