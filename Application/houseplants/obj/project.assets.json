@@ -10588,11 +10588,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants\\HousePlants.csproj",
+      "projectUniqueName": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\houseplants\\HousePlants.csproj",
       "projectName": "HousePlants",
-      "projectPath": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants\\HousePlants.csproj",
+      "projectPath": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\houseplants\\HousePlants.csproj",
       "packagesPath": "C:\\Users\\terje.SENTINEL\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants\\obj\\",
+      "outputPath": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\houseplants\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -10747,7 +10747,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

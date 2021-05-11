@@ -23,7 +23,7 @@ namespace HousePlants.Pages.Plants
         [DataType(DataType.MultilineText), StringLength(20000)]
         public string Description { get; set; }
         public LightRequirement LightRequirement { get; set; }
-        public WaterRequirement WaterRequirement { get; set; }
+        public WateringTechnique WateringTechnique { get; set; }
     }
 
     //public class CreatePlantVMValidator : AbstractValidator<CreatePlant>

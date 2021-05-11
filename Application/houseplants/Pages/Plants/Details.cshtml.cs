@@ -12,9 +12,9 @@ namespace HousePlants.Pages.Plants
 {
     public class DetailsModel : PageModel
     {
-        private readonly HousePlants.Data.HousePlantsContext _context;
+        private readonly HousePlantsContext _context;
 
-        public DetailsModel(HousePlants.Data.HousePlantsContext context)
+        public DetailsModel(HousePlantsContext context)
         {
             _context = context;
         }

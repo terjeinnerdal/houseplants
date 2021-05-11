@@ -30,9 +30,9 @@
                 <span asp-validation-for="CreatePlantVmModel.LightRequirement" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatePlantVmModel.WaterRequirement" class="control-label"></label>
-                <select asp-for="CreatePlantVmModel.WaterRequirement" asp-items="Html.GetEnumSelectList<WaterRequirement>()" class="form-control"></select>
-                <span asp-validation-for="CreatePlantVmModel.WaterRequirement" class="text-danger"></span>
+                <label asp-for="CreatePlantVmModel.WateringTechnique" class="control-label"></label>
+                <select asp-for="CreatePlantVmModel.WateringTechnique" asp-items="Html.GetEnumSelectList<WateringTechnique>()" class="form-control"></select>
+                <span asp-validation-for="CreatePlantVmModel.WateringTechnique" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

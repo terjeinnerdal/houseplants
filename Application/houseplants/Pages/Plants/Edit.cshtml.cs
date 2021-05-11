@@ -13,9 +13,9 @@ namespace HousePlants.Pages.Plants
 {
     public class EditModel : PageModel
     {
-        private readonly HousePlants.Data.HousePlantsContext _context;
+        private readonly HousePlantsContext _context;
 
-        public EditModel(HousePlants.Data.HousePlantsContext context)
+        public EditModel(HousePlantsContext context)
         {
             _context = context;
         }

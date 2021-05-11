@@ -7,19 +7,44 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HousePlants.Migrations
+namespace KrnankSoft.HousePlants.Migrations
 {
     [DbContext(typeof(HousePlantsContext))]
-    [Migration("20210202232018_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20210325215713_BaseEntity_and_Plant")]
+    partial class BaseEntity_and_Plant
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.2");
+                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("HousePlants.Domain.Models.Genus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(20000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genus");
+                });
 
             modelBuilder.Entity("HousePlants.Domain.Models.Plant", b =>
                 {
@@ -30,11 +55,7 @@ namespace HousePlants.Migrations
                     b.Property<DateTime?>("AquiredDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ClonedFromId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("CommonName")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
@@ -42,7 +63,11 @@ namespace HousePlants.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasMaxLength(20000)
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("GenusId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LatinName")
                         .HasMaxLength(128)
@@ -54,11 +79,8 @@ namespace HousePlants.Migrations
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("TerminationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TerminationReason")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<short>("SoilRequirement")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Title")
                         .HasMaxLength(128)
@@ -69,18 +91,18 @@ namespace HousePlants.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClonedFromId");
+                    b.HasIndex("GenusId");
 
                     b.ToTable("Plants");
                 });
 
             modelBuilder.Entity("HousePlants.Domain.Models.Plant", b =>
                 {
-                    b.HasOne("HousePlants.Domain.Models.Plant", "ClonedFrom")
+                    b.HasOne("HousePlants.Domain.Models.Genus", "Genus")
                         .WithMany()
-                        .HasForeignKey("ClonedFromId");
+                        .HasForeignKey("GenusId");
 
-                    b.Navigation("ClonedFrom");
+                    b.Navigation("Genus");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,9 +12,9 @@ namespace HousePlants.Pages.Plants
 {
     public class IndexModel : PageModel
     {
-        private readonly HousePlants.Data.HousePlantsContext _context;
+        private readonly HousePlantsContext _context;
 
-        public IndexModel(HousePlants.Data.HousePlantsContext context)
+        public IndexModel(HousePlantsContext context)
         {
             _context = context;
         }

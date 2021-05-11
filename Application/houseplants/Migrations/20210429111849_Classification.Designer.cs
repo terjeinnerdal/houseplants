@@ -4,14 +4,16 @@ using HousePlants.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace KrnankSoft.HousePlants.Migrations
 {
     [DbContext(typeof(HousePlantsContext))]
-    partial class HousePlantsContextModelSnapshot : ModelSnapshot
+    [Migration("20210429111849_Classification")]
+    partial class Classification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

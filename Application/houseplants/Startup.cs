@@ -70,7 +70,7 @@ namespace HousePlants
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(); 
             app.UseSerilogRequestLogging();
             app.UseCookiePolicy();
             app.UseRouting();
