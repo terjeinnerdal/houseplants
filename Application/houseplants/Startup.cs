@@ -1,10 +1,9 @@
-﻿using EntityFrameworkCore.SqlServer.NodaTime.Extensions;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using HousePlants.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,14 +47,15 @@ namespace HousePlants
             //services.AddDbContext<HousePlantsContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("HousePlantsContext")));
 
-            services.AddDbContext<HousePlantsContext>(options =>
-            {
-                var connectionStringBuilder =
-                    new SqlConnectionStringBuilder(Configuration.GetConnectionString("HousePlantsContext"));
 
-                options.UseSqlServer(
-                    connectionStringBuilder.ConnectionString, builder => builder.UseNodaTime());
-            }); 
+            services.AddHealthChecks();
+            services.AddDbContext<HousePlantsContext>(options =>
+                options.UseNpgsql(
+                    Configuration.GetConnectionString("HousePlantsContext")));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<HousePlantsContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

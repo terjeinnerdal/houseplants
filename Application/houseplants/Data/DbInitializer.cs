@@ -5,7 +5,7 @@ using HousePlants.Data;
 using HousePlants.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace KrnankSoft.HousePlants.Data
+namespace KrankSoft.HousePlants.Data
 {
     public static class DbInitializer
     {
@@ -34,6 +34,7 @@ namespace KrnankSoft.HousePlants.Data
             // Genus and family.
             // Figs I know by the Genus Fixus. My cactus may be different genuses but in the family Cactiaceae
             // When viewing them I'd liker to order by
+            // - Minimum temperature
             // - Watering requirements
             // - Light requirements
             // - Genus
@@ -266,7 +267,20 @@ namespace KrnankSoft.HousePlants.Data
             context.Add(plant);
             plant = new Plant
             {
-                CommonName = "Monstera Deliciosa (Plantasjen)",
+                CommonName = "Monstera Cuttings Plastic Bag",
+                Description = "4 Stiklinger tatt fra den som ble kjøpt på Plantasjen som hadde fullt av tusenbein i seg og derfor ble kastet.",
+                AquiredDate = DateTime.Parse("11.01.2021", format),
+                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
+                WateringTechnique = WateringTechnique.WetDry,
+                MinimumTemperature = 15,
+                MaximumTemperature = 30
+
+            };
+            context.Add(plant);
+            plant = new Plant
+            {
+                LatinName = "Monstera Deliciosa",
+                CommonName = "Monstera Cutting Self Watering",
                 Description = "4 Stiklinger tatt fra den som ble kjøpt på Plantasjen som hadde fullt av tusenbein i seg og derfor ble kastet.",
                 AquiredDate = DateTime.Parse("11.01.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,

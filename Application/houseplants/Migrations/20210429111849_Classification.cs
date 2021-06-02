@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace KrnankSoft.HousePlants.Migrations
+namespace KrankSoft.HousePlants.Migrations
 {
     public partial class Classification : Migration
     {

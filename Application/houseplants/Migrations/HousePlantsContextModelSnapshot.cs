@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace KrnankSoft.HousePlants.Migrations
+namespace KrankSoft.HousePlants.Migrations
 {
     [DbContext(typeof(HousePlantsContext))]
     partial class HousePlantsContextModelSnapshot : ModelSnapshot

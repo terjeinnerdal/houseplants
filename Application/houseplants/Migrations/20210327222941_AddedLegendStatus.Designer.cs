@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace KrnankSoft.HousePlants.Migrations
+namespace KrankSoft.HousePlants.Migrations
 {
     [DbContext(typeof(HousePlantsContext))]
     [Migration("20210327222941_AddedLegendStatus")]
