@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using HousePlants.Data;
 using HousePlants.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace KrankSoft.HousePlants.Data
+namespace HousePlants.Data
 {
     public static class DbInitializer
     {
@@ -26,10 +25,6 @@ namespace KrankSoft.HousePlants.Data
             //    return;
             //}
 
-            Plant plant = context.Plants.FirstOrDefault(s => s.CommonName.Equals("Ficus Lyrata Bambino"));
-            if (plant != null) return;
-
-            var format = new DateTimeFormatInfo { ShortDatePattern =  "d.M.yyyy" };
 
             // Genus and family.
             // Figs I know by the Genus Fixus. My cactus may be different genuses but in the family Cactiaceae
@@ -40,6 +35,14 @@ namespace KrankSoft.HousePlants.Data
             // - Genus
             // - Where I got it
             // - When I got it
+            
+            Plant plant = context.Plants.FirstOrDefault(s => s.CommonName.Equals("Ficus Lyrata Bambino"));
+            if (plant != null)
+            {
+                return;
+            }
+
+            var format = new DateTimeFormatInfo { ShortDatePattern =  "d.M.yyyy" };
 
             #region Figs
             Genus ficusGenus = new Genus
@@ -131,11 +134,30 @@ namespace KrankSoft.HousePlants.Data
                 LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.Sandy,
+            }; 
+            plant = new Plant
+            {
+                CommonName = "Succulent",
+                LatinName = "Gasteria Duval",
+                Description = "Kjøpt på IKEA. Den lille som jeg trodde var Aloe Vera",
+                AquiredDate = DateTime.Parse("01.10.2020", format),
+                LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
+                WateringTechnique = WateringTechnique.WetBoneDry,
+                SoilRequirement = SoilRequirement.Sandy,
             };
+            plant = new Plant
+            {
+                CommonName = "Succulent",
+                LatinName = "Gasteria Carinata",
+                Description = "Kjøpt på IKEA. Den kule",
+                AquiredDate = DateTime.Parse("01.10.2020", format),
+                LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
+                WateringTechnique = WateringTechnique.WetBoneDry,
+                SoilRequirement = SoilRequirement.Sandy,
+            };
+            #endregion
 
-            //
-            // Cactus
-            //
+            #region Cactus
             var cactaceaeFamily = new Family
             {
                 Title = "Cactaceae",
@@ -252,7 +274,6 @@ namespace KrankSoft.HousePlants.Data
             };
             context.Add(plant);
             #endregion
-
             
             #region Other
             plant = new Plant
@@ -474,7 +495,7 @@ namespace KrankSoft.HousePlants.Data
             #region Unidentified
             plant = new Plant
             {
-                CommonName = "The Shrub",
+                CommonName = "Blåstjerne",
                 LatinName = "",
                 Description = "Kjøpt på Meny sammen med spider plant. " +
                               "Virker som den tåler hva som helst av lysforhold." +

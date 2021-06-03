@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Npgsql.NodaTime;
 
 namespace HousePlants
 {
@@ -30,32 +31,22 @@ namespace HousePlants
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            
+            services.AddDbContext<HousePlantsContext>(options =>
+                    options.UseNpgsql(
+                        Configuration.GetConnectionString("PostgresConnection"), builder => builder.UseNodaTime()));
 
-
-
-            // Enable Application Insights for telemetries. Update the instrumentation key in 'appsettings.json' to transfer the events.
-            //services.AddApplicationInsightsTelemetry();
-            //services.AddApplicationInsightsKubernetesEnricher();
-
-            services.AddAutoMapper(typeof(Startup));
-
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
-
             services.AddRazorPages().AddFluentValidation();
-
-            //services.AddDbContext<HousePlantsContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("HousePlantsContext")));
-
-
             services.AddHealthChecks();
-            services.AddDbContext<HousePlantsContext>(options =>
-                options.UseNpgsql(
-                    Configuration.GetConnectionString("HousePlantsContext")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<HousePlantsContext>();
 
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

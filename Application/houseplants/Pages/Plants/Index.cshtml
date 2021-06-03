@@ -11,28 +11,28 @@
     <a asp-page="Create">Create New</a>
 </p>
 
-<div>Number of plants: @Model.Plant.Count</div>
+<div>Number of plants: @Model.Plants.Count</div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Plant[0].CommonName)
+                @Html.DisplayNameFor(model => model.Plants[0].CommonName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Plant[0].LatinName)
+                @Html.DisplayNameFor(model => model.Plants[0].LatinName)
              </th>
             <th>
-                @Html.DisplayNameFor(model => model.Plant[0].AquiredDate)
+                @Html.DisplayNameFor(model => model.Plants[0].AquiredDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Plant[0].Title)
+                @Html.DisplayNameFor(model => model.Plants[0].Title)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Plant) {
+@foreach (var item in Model.Plants) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CommonName)
