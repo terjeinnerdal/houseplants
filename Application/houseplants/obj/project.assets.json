@@ -35,7 +35,7 @@
           "build/BuildBundlerMinifier.targets": {}
         }
       },
-      "FluentValidation/10.2.2": {
+      "FluentValidation/10.2.3": {
         "type": "package",
         "compile": {
           "lib/net5.0/FluentValidation.dll": {}
@@ -44,11 +44,11 @@
           "lib/net5.0/FluentValidation.dll": {}
         }
       },
-      "FluentValidation.AspNetCore/10.2.2": {
+      "FluentValidation.AspNetCore/10.2.3": {
         "type": "package",
         "dependencies": {
-          "FluentValidation": "10.2.2",
-          "FluentValidation.DependencyInjectionExtensions": "10.2.2"
+          "FluentValidation": "10.2.3",
+          "FluentValidation.DependencyInjectionExtensions": "10.2.3"
         },
         "compile": {
           "lib/net5.0/FluentValidation.AspNetCore.dll": {}
@@ -60,10 +60,10 @@
           "Microsoft.AspNetCore.App"
         ]
       },
-      "FluentValidation.DependencyInjectionExtensions/10.2.2": {
+      "FluentValidation.DependencyInjectionExtensions/10.2.3": {
         "type": "package",
         "dependencies": {
-          "FluentValidation": "10.2.2",
+          "FluentValidation": "10.2.3",
           "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
         },
         "compile": {
@@ -3469,7 +3469,7 @@
       },
       "HousePlants.Domain/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
+        "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.DataAnnotations": "2.2.0",
           "NodaTime": "3.0.5",
@@ -3542,15 +3542,15 @@
         "tools/netstandard1.3/Newtonsoft.Json.dll"
       ]
     },
-    "FluentValidation/10.2.2": {
-      "sha512": "/3J+ToMcXV9bdnLpXJJ4q2iDYRvcKU6jcEhKpsXfgrs/1vBhAZQDdOqVgzHXh3gwgy1fYyVGEvSAvvDlfOQavw==",
+    "FluentValidation/10.2.3": {
+      "sha512": "R2w/E6jgg9RPSlg7JQSTHg6AWDwlOXARaV4ZUKrPJ1gi1e+oaBEcomxmo29j9BLZivkyQhOpAboJ9nKZS4/xYA==",
       "type": "package",
-      "path": "fluentvalidation/10.2.2",
+      "path": "fluentvalidation/10.2.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "fluent-validation-icon.png",
-        "fluentvalidation.10.2.2.nupkg.sha512",
+        "fluentvalidation.10.2.3.nupkg.sha512",
         "fluentvalidation.nuspec",
         "lib/net5.0/FluentValidation.dll",
         "lib/net5.0/FluentValidation.xml",
@@ -3560,15 +3560,15 @@
         "lib/netstandard2.1/FluentValidation.xml"
       ]
     },
-    "FluentValidation.AspNetCore/10.2.2": {
-      "sha512": "0PpJ5pjGcew+AoQrgLfWkXjAXxQjJmsJpaERF41IlzGn0BjeC7VN2SqYSVZQjL3Zimj1cR0kIj2qzMpYIwsP4g==",
+    "FluentValidation.AspNetCore/10.2.3": {
+      "sha512": "70wN+hrf/50nUISfIVh85ma7snSA+OW4SWrvgdd+Ap9Yt+tvaA/R3uXvBL2rykWn0ZvCK9KwDd6cu7uPRmoamw==",
       "type": "package",
-      "path": "fluentvalidation.aspnetcore/10.2.2",
+      "path": "fluentvalidation.aspnetcore/10.2.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "fluent-validation-icon.png",
-        "fluentvalidation.aspnetcore.10.2.2.nupkg.sha512",
+        "fluentvalidation.aspnetcore.10.2.3.nupkg.sha512",
         "fluentvalidation.aspnetcore.nuspec",
         "lib/net5.0/FluentValidation.AspNetCore.dll",
         "lib/net5.0/FluentValidation.AspNetCore.xml",
@@ -3576,15 +3576,15 @@
         "lib/netcoreapp3.1/FluentValidation.AspNetCore.xml"
       ]
     },
-    "FluentValidation.DependencyInjectionExtensions/10.2.2": {
-      "sha512": "7nnJBWadhHZ84T9E1AUwCpxw5c2PhpVVgqLjgw8CN1QNnMuu8rNj+UcKhWVLcMSw/WfvxkNbK+3Ie2JeEGEREw==",
+    "FluentValidation.DependencyInjectionExtensions/10.2.3": {
+      "sha512": "jwrDR0O9RA6IvXkON5M+UBSW2fNtsR2a9dw3dZYNslLzoaPd8K+NiJpn6FPIw63PHnwxsN9muiiNuKXf8HMpaw==",
       "type": "package",
-      "path": "fluentvalidation.dependencyinjectionextensions/10.2.2",
+      "path": "fluentvalidation.dependencyinjectionextensions/10.2.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "fluent-validation-icon.png",
-        "fluentvalidation.dependencyinjectionextensions.10.2.2.nupkg.sha512",
+        "fluentvalidation.dependencyinjectionextensions.10.2.3.nupkg.sha512",
         "fluentvalidation.dependencyinjectionextensions.nuspec",
         "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.dll",
         "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.xml",
@@ -10519,7 +10519,7 @@
       "AutoMapper >= 10.1.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.1",
       "BuildBundlerMinifier >= 3.2.449",
-      "FluentValidation.AspNetCore >= 10.2.2",
+      "FluentValidation.AspNetCore >= 10.2.3",
       "HousePlants.Domain >= 1.0.0",
       "Microsoft.ApplicationInsights.AspNetCore >= 2.17.0",
       "Microsoft.ApplicationInsights.Kubernetes >= 2.0.1",
@@ -10612,7 +10612,7 @@
           },
           "FluentValidation.AspNetCore": {
             "target": "Package",
-            "version": "[10.2.2, )"
+            "version": "[10.2.3, )"
           },
           "Microsoft.ApplicationInsights.AspNetCore": {
             "target": "Package",

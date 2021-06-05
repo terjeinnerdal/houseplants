@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using NodaTime;
 
-namespace HousePlants.Domain.Models
+namespace HousePlants.Domain
 {
     /// <summary>
     /// BaseEntity using a Guid for the Id and NodaTime types for the Created and Modified timestamps.
@@ -25,17 +25,9 @@ namespace HousePlants.Domain.Models
         public Instant? Modified { get; set; }
 
         [StringLength(128)]
-        public string? Title { get; set; }
+        public abstract string Title { get; set; }
 
         [DataType(DataType.MultilineText), StringLength(20000)]
         public string? Description { get; set; }
     }
-
-    public class Division : BaseEntity { }
-    public class Klasse : BaseEntity { }
-    public class Order : BaseEntity { }
-    public class Family : BaseEntity { }
-    public class Genus : BaseEntity { }
-    public class Species : BaseEntity { }
-    public class Variety : BaseEntity { }
 }

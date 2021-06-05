@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HousePlants.Data;
+using HousePlants.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

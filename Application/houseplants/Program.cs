@@ -23,7 +23,6 @@ namespace HousePlants
                 using IServiceScope scope = host.Services.CreateScope();
                 IServiceProvider services = scope.ServiceProvider;
                 var config = services.GetRequiredService<IConfiguration>();
-                Console.WriteLine(config["BALLE"]);
             }
         }
 

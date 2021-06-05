@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using HousePlants.Domain;
 using HousePlants.Domain.Models;
+using HousePlants.Domain.Models.Requirements;
+using HousePlants.Domain.Models.Taxonomy;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 
 namespace HousePlants.Data
@@ -25,7 +29,54 @@ namespace HousePlants.Data
             //    return;
             //}
 
+            var rubiaceaeFamily = new Family("Rubiaceae");
+            var moraceaeFamily = new Family("Moraceae");
+            var cactaceaeFamily = new Family("Cactaceae");
+            var crassulaceaeFamily = new Family("Crassulaceae")
+            {
+                Description = "The Crassulaceae, also known as the stonecrop family or the orpine family, " +
+                              "are a diverse family of dicotyledon flowering plants characterized by succulent " +
+                              "leaves and a unique form of photosynthesis, known as Crassulacean acid metabolism (CAM)."
+            };
+            var asphodelaceaeFamily = new Family("Asphodelaceae");
+            var urticaceaeFamily = new Family("Urticaceae") {
+                Description = "The Urticaceae are a family, the nettle family, of flowering plants."
+            };
 
+            // Genuses
+            var coffeaGenus = new Genus("Coffea");
+            var echinocactusGenus = new Genus("Echinocactus");
+            var echiveriaGenus = new Genus("Echiveria");
+
+            var ficusGenus = new Genus("Ficus") {
+                Description =
+                    "Ficus is a genus of about 850 species of woody trees, shrubs, vines, epiphytes and " +
+                    "hemiepiphytes in the family Moraceae. Collectively known as fig trees or figs, they " +
+                    "are native throughout the tropics with a few species extending into the semi-warm temperate zone.",
+                Family = moraceaeFamily
+            };
+
+            var gasteriaGenus = new Genus("Gasteria");
+            var pileaGenus = new Genus("Pilea") {
+                Description =
+                    "Pilea, with 600–715 species, is the largest genus of flowering plants in the nettle family Urticaceae, and one of the larger genera in the Urticales. " +
+                    "It is distributed throughout the tropics, subtropics, and warm temperate regions (with the exception of Australia and New Zealand)."
+            };
+            var pilosocereusGenus = new Genus( "Pilosocereus");
+
+            // Species
+            var coffeaArabicaSpecies = new Species("Coffea Arabica");
+            var lyrataSpecies = new Species("Ficus Lyrata");
+            var lyrataBambinoSpecies = new Species("Ficus Lyrata Bambino");
+            var cyathistipulaSpecies = new Species("Ficus Cyathistipula");
+            var elasticaSpecies = new Species("Ficus Elastica");
+            var benjaminaSpecies = new Species("Ficus Benjamina");
+            var echiveriaGibbifloraSpecies = new Species("Echeveria Gibbiflora");
+            var gasteriaCarinataSpecies = new Species("Gasteria Carinata");
+            var gasteriaDuvalSpecies = new Species("Gasteria Duval");
+            var pilosocereusPachycladusSpecies = new Species("Pilosocereus PachycladusSpecies");
+            var echinocactusGrusoniiSpecies = new Species("Echinocactus Grusonii");
+            
             // Genus and family.
             // Figs I know by the Genus Fixus. My cactus may be different genuses but in the family Cactiaceae
             // When viewing them I'd liker to order by
@@ -35,24 +86,16 @@ namespace HousePlants.Data
             // - Genus
             // - Where I got it
             // - When I got it
-            
+
             Plant plant = context.Plants.FirstOrDefault(s => s.CommonName.Equals("Ficus Lyrata Bambino"));
             if (plant != null)
             {
                 return;
             }
 
-            var format = new DateTimeFormatInfo { ShortDatePattern =  "d.M.yyyy" };
+            var format = new DateTimeFormatInfo { ShortDatePattern = "d.M.yyyy" };
 
             #region Figs
-            Genus ficusGenus = new Genus
-            {
-                Title = "Ficus",
-                Description =
-                    "Ficus is a genus of about 850 species of woody trees, shrubs, vines, epiphytes and hemiepiphytes in the family Moraceae. " +
-                    "Collectively known as fig trees or figs, they are native throughout the tropics with a few species extending into the semi-warm temperate zone."
-            };
-
             plant = new Plant
             {
                 CommonName = "Fiolinfiken",
@@ -62,10 +105,7 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.IndirectSunlight,
                 MinimumTemperature = 12,
                 WateringTechnique = WateringTechnique.WetDry,
-                Classification = new Classification
-                {
-                    Genus = ficusGenus
-                }
+                Species = lyrataSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -75,10 +115,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("22.11.2020", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
-                Classification = new Classification
-                {
-                    Genus = ficusGenus
-                }
+                Species = lyrataBambinoSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -89,10 +126,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
-                Classification = new Classification
-                {
-                    Genus = ficusGenus
-                }
+                Species = cyathistipulaSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -103,23 +137,17 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.01.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
-                Classification = new Classification
-                {
-                    Genus = ficusGenus
-                }
+                Species = elasticaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
-                CommonName = "Fixus Benjamina",
+                LatinName = "Fixus Benjamina",
                 Description = "Bought at IKEA. Beatiful plant! Really thrives.",
                 AquiredDate = DateTime.Parse("01.02.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
-                Classification = new Classification
-                {
-                    Genus = ficusGenus
-                }
+                Species = benjaminaSpecies
             };
             context.Add(plant);
             #endregion
@@ -127,23 +155,23 @@ namespace HousePlants.Data
             #region Succulents
             plant = new Plant
             {
-                CommonName = "Gibbiflora",
                 LatinName = "Echiveria Gibbiflora",
                 Description = "Kjøpt på IKEA. Lilla sukkulent.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.Sandy,
-            }; 
+                Species = echiveriaGibbifloraSpecies
+            };
             plant = new Plant
             {
-                CommonName = "Succulent",
                 LatinName = "Gasteria Duval",
                 Description = "Kjøpt på IKEA. Den lille som jeg trodde var Aloe Vera",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.Sandy,
+                Species = gasteriaDuvalSpecies
             };
             plant = new Plant
             {
@@ -154,15 +182,11 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.Sandy,
+                Species = gasteriaCarinataSpecies
             };
             #endregion
 
             #region Cactus
-            var cactaceaeFamily = new Family
-            {
-                Title = "Cactaceae",
-                Description = ""
-            };
             plant = new Plant
             {
                 CommonName = "Søylekaktus",
@@ -172,10 +196,7 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.FullSunlight,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.Sandy,
-                Classification = new Classification
-                {
-                    Family = cactaceaeFamily
-                }
+                Species = pilosocereusPachycladusSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -187,10 +208,7 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.FullSunlight,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.Sandy,
-                Classification = new Classification
-                {
-                    Family = cactaceaeFamily
-                }
+                Species = echinocactusGrusoniiSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -206,28 +224,12 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight | LightRequirement.Shade,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.Sandy,
-                LegendStatus = LegendStatus.FamilyMember | LegendStatus.LowMaint | LegendStatus.Neglected | LegendStatus.Survivor,
-                Classification = new Classification
-                {
-                    Family = cactaceaeFamily
-                }
+                Status = Plant.Legends.FamilyMember | Plant.Legends.LowMaint | Plant.Legends.Neglected | Plant.Legends.Survivor,
             };
             context.Add(plant);
             #endregion
 
             #region Pileas
-            var urticaceaeFamily = new Family
-            {
-                Title = "Urticaceae",
-                Description = "The Urticaceae are a family, the nettle family, of flowering plants."
-            };
-            var pileaGenus = new Genus
-            {
-                Title = "Pilea",
-                Description =
-                    "Pilea, with 600–715 species, is the largest genus of flowering plants in the nettle family Urticaceae, and one of the larger genera in the Urticales. " +
-                    "It is distributed throughout the tropics, subtropics, and warm temperate regions (with the exception of Australia and New Zealand)."
-            };
             plant = new Plant
             {
                 CommonName = "Kinesisk pengeplante",
@@ -237,10 +239,6 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
                 SoilRequirement = SoilRequirement.StandardMix,
-                Classification = new Classification
-                {
-                    Genus = pileaGenus
-                }
             };
             context.Add(plant);
             plant = new Plant
@@ -252,10 +250,6 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
                 SoilRequirement = SoilRequirement.StandardMix,
-                Classification = new Classification
-                {
-                    Genus = pileaGenus
-                }
             };
             context.Add(plant);
             plant = new Plant
@@ -267,14 +261,10 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
                 SoilRequirement = SoilRequirement.StandardMix,
-                Classification = new Classification
-                {
-                    Genus = pileaGenus
-                }
             };
             context.Add(plant);
             #endregion
-            
+
             #region Other
             plant = new Plant
             {
@@ -330,7 +320,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
-                Toxic = true
+                //Toxic = true
             };
             context.Add(plant);
 
@@ -361,14 +351,14 @@ namespace HousePlants.Data
             {
                 CommonName = "Elefantøre",
                 LatinName = "Alocasia",
-                Description = "Kjøpt på Plantasjen. Den blir mellom 25-40 cm høy og er en svært dekorativ stueplante, men pass på; denne vakringen er nemlig giftig!" + 
-                "- Denne planten trives best med en lys plassering, uten direkte sollys. Den liker stuetemperatur fra 15 grader og oppover." + 
-                "- Den liker normal vanning, dvs at den bør holdes jevnt fuktig; ikke for mye, ikke for lite vann!" + 
-                
-                "Elefantøreplanten «snakker» gjennom bladene sine. Ved å se på bladene kan du lese hvordan den har det:" + 
-                "- Brune blader: Du har vannet den for mye, eller utsatt den for kulde." + 
-                "- Lyse og brune blader: Den har blitt utsatt for direkte sollys." + 
-                "- Alle bladene klapper sammen: Det er vinter og den har gått i dvale." + 
+                Description = "Kjøpt på Plantasjen. Den blir mellom 25-40 cm høy og er en svært dekorativ stueplante, men pass på; denne vakringen er nemlig giftig!" +
+                "- Denne planten trives best med en lys plassering, uten direkte sollys. Den liker stuetemperatur fra 15 grader og oppover." +
+                "- Den liker normal vanning, dvs at den bør holdes jevnt fuktig; ikke for mye, ikke for lite vann!" +
+
+                "Elefantøreplanten «snakker» gjennom bladene sine. Ved å se på bladene kan du lese hvordan den har det:" +
+                "- Brune blader: Du har vannet den for mye, eller utsatt den for kulde." +
+                "- Lyse og brune blader: Den har blitt utsatt for direkte sollys." +
+                "- Alle bladene klapper sammen: Det er vinter og den har gått i dvale." +
                 "Vannes sparsommelig, men jevnt inntil den ser ut til å våkne til igjen! Da kan du gjenoppta normal vanning.",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 MinimumTemperature = 15,
@@ -439,7 +429,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
                 WateringTechnique = WateringTechnique.WetDry,
-                WaterRequirement = WaterRequirement.Low, 
+                WaterRequirement = WaterRequirement.Low,
                 SoilRequirement = SoilRequirement.StandardMix,
                 MinimumTemperature = 12
             };
@@ -447,13 +437,14 @@ namespace HousePlants.Data
 
             plant = new Plant
             {
-                CommonName = "Coffea Arabica",
-                LatinName = "Sansevieria Trifasciata",
+                CommonName = "Kaffeplante",
+                LatinName = "Coffea Arabica",
                 Description = "Kjøpt på IKEA.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
                 SoilRequirement = SoilRequirement.StandardMix,
+                Species = coffeaArabicaSpecies
             };
             context.Add(plant);
 
@@ -461,7 +452,7 @@ namespace HousePlants.Data
             {
                 CommonName = "Spider plant, Grønnrenner",
                 LatinName = "Chlorophytum comosum",
-                Description = "Kjøpt på Meny Solsiden. Er reversert variegata på denne med grønn stripe i midten av bladene. Har allerede skutt ut en \"pup\"." + 
+                Description = "Kjøpt på Meny Solsiden. Er reversert variegata på denne med grønn stripe i midten av bladene. Har allerede skutt ut en \"pup\"." +
                               "Veldig voksevillig, katter elsker den pga. dens hallusinogene egenskaper. Har noen brune tupper, enten for mye gjødsel eller for lav luftfuktighet.",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
@@ -482,12 +473,7 @@ namespace HousePlants.Data
                 WateringTechnique = WateringTechnique.WetDry,
                 WaterRequirement = WaterRequirement.Medium,
                 SoilRequirement = SoilRequirement.StandardMix,
-                LegendStatus = LegendStatus.LowMaint | LegendStatus.Survivor,
-                Toxic = true,
-                Classification = new Classification
-                {
-                    Family = cactaceaeFamily
-                }
+                Status = Plant.Legends.LowMaint | Plant.Legends.Survivor
             };
             context.Add(plant);
             #endregion
@@ -498,18 +484,12 @@ namespace HousePlants.Data
                 CommonName = "Blåstjerne",
                 LatinName = "",
                 Description = "Kjøpt på Meny sammen med spider plant. " +
-                              "Virker som den tåler hva som helst av lysforhold." +
-                              "Tålte kulden hjem fra Meny bra også. Virker meget hardfør! " +
-                              "Tror dette er Leon planta faktisk.",
+                              "Tålte kulden hjem fra Meny bra også. Virker meget hardfør!",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
                 WateringTechnique = WateringTechnique.WetBoneDry | WateringTechnique.WetDry,
                 SoilRequirement = SoilRequirement.StandardMix | SoilRequirement.Coarse,
-                LegendStatus = LegendStatus.LowMaint | LegendStatus.Survivor,
-                Classification = new Classification
-                {
-                    Family = cactaceaeFamily
-                }
+                Status = Plant.Legends.LowMaint | Plant.Legends.Survivor,
             };
             context.Add(plant);
             #endregion
