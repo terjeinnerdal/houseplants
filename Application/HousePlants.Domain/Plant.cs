@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using HousePlants.Domain.Models.Requirements;
 using HousePlants.Domain.Models.Taxonomy;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
 #nullable enable
@@ -27,28 +28,36 @@ namespace HousePlants.Domain
     }
 
     // todo: this should be an owned entity type. But is it owned by Plant or Species. I would say species at first glance.
+    [Owned]
+    public sealed class FloweringPeriod
+    {
+        public Month Start { get; private set; }
+        public Month End { get; private set; }
 
+        public FloweringPeriod(Month start, Month end)
+        {
+            if (start == Month.NotSet)
+                throw new ArgumentException("FloweringPeriod must have a start date", nameof(start));
+
+            if (end == Month.NotSet)
+                throw new ArgumentException("FloweringPeriod must have an end date", nameof(end));
+
+            Start = start;
+            End = end;
+        }
+    }
+
+    [Owned]
     public class PlantPassport
     {
-
-        /// <summary>
-        /// Contains start and end month for when a plant produces flowers.
-        /// This class does not need a primary key. Is it a owned entity?
-        /// </summary>
-
-        public Guid Id { get; set; }
-
+        //public Guid Id { get; set; }
         public bool Perennial { get; set; }
-
         public FloweringPeriod? FloweringPeriod { get; set; }
         public LightRequirement LightRequirement { get; set; }
         public WaterRequirement WaterRequirement { get; set; }
         public NutrientRequirement NutrientRequirement { get; set; }
         public int HeightInCentimeters { get; set; }
-        public bool Eadible { get; set; }
-        //public bool Toxic { get; set; }
-        
-        public List<Plant> Plants { get; set; } = new List<Plant>();
+        public bool Edible { get; set; } = false;
     }
 
     public enum NutrientRequirement

@@ -5,11 +5,11 @@ namespace HousePlants.Domain.Models.Taxonomy
     public class Species : TaxonomyBase, IEquatable<Species>
     {
         public Genus? Genus { get; set; }
-
+        public PlantPassport? PlantPassport { get; set; }
+        
         public Species(string name) : base(name)
         {
             Arcanea = Arcanea.Species;
-
         }
 
         public bool Equals(Species? other)

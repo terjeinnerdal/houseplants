@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[2.2.0, )"
             },
+            "Microsoft.EntityFrameworkCore.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
             "NodaTime": {
               "target": "Package",
               "version": "[3.0.5, )"

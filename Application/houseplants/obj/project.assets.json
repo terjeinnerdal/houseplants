@@ -3472,6 +3472,7 @@
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.DataAnnotations": "2.2.0",
+          "Microsoft.EntityFrameworkCore.Abstractions": "5.0.6",
           "NodaTime": "3.0.5",
           "System.ComponentModel.Annotations": "5.0.0"
         },

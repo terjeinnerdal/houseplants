@@ -65,7 +65,17 @@ namespace HousePlants.Data
             var pilosocereusGenus = new Genus( "Pilosocereus");
 
             // Species
-            var coffeaArabicaSpecies = new Species("Coffea Arabica");
+            var coffeaArabicaSpecies = new Species("Coffea Arabica")
+            {
+                PlantPassport = new PlantPassport
+                {
+                    Edible = true,
+                    HeightInCentimeters = 200,
+                    LightRequirement = LightRequirement.IndirectSunlight,
+                    WaterRequirement = WaterRequirement.Medium,
+                    NutrientRequirement = NutrientRequirement.Medium
+                }
+            };
             var lyrataSpecies = new Species("Ficus Lyrata");
             var lyrataBambinoSpecies = new Species("Ficus Lyrata Bambino");
             var cyathistipulaSpecies = new Species("Ficus Cyathistipula");
