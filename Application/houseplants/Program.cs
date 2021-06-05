@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using HousePlants.Data;
-using KrnankSoft.HousePlants.Data;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,14 +13,17 @@ namespace HousePlants
     {
         public static void Main(string[] args)
         {
-            // Create the generic host
             var host = CreateHostBuilder(args).Build();
-            
-            // Stuff to do before running the host
+            PrintEnv();
             CreateDbIfNotExists(host);
-
-            // Run the host
             host.Run();
+
+            void PrintEnv()
+            {
+                using IServiceScope scope = host.Services.CreateScope();
+                IServiceProvider services = scope.ServiceProvider;
+                var config = services.GetRequiredService<IConfiguration>();
+            }
         }
 
         /// <summary>
@@ -40,12 +39,9 @@ namespace HousePlants
                 {
                     webBuilder.UseStartup<Startup>()
                         .ConfigureAppConfiguration(config =>
+                            config.AddJsonFile("appsettings.logs.json", optional: true))
+                        .UseSerilog((hostingContext, loggerConfiguration) =>
                         {
-                            config
-                                // Used for local settings like connection strings.
-                                .AddJsonFile("appsettings.logs.json", optional: true);
-                        })
-                        .UseSerilog((hostingContext, loggerConfiguration) => {
                             loggerConfiguration
                                 .ReadFrom.Configuration(hostingContext.Configuration)
                                 .Enrich.FromLogContext()
@@ -53,8 +49,8 @@ namespace HousePlants
                                 .Enrich.WithProperty("Environment", hostingContext.HostingEnvironment);
                         });
                 });
-        
-        
+
+
         private static void CreateDbIfNotExists(IHost host)
         {
             using IServiceScope scope = host.Services.CreateScope();

@@ -1,15 +1,15 @@
-﻿using EntityFrameworkCore.SqlServer.NodaTime.Extensions;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using HousePlants.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Npgsql.NodaTime;
 
 namespace HousePlants
 {
@@ -31,31 +31,22 @@ namespace HousePlants
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            
+            services.AddDbContext<HousePlantsContext>(options =>
+                    options.UseNpgsql(
+                        Configuration.GetConnectionString("PostgresConnection"), builder => builder.UseNodaTime()));
 
-
-
-            // Enable Application Insights for telemetries. Update the instrumentation key in 'appsettings.json' to transfer the events.
-            //services.AddApplicationInsightsTelemetry();
-            //services.AddApplicationInsightsKubernetesEnricher();
-
-            services.AddAutoMapper(typeof(Startup));
-
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
-
             services.AddRazorPages().AddFluentValidation();
+            services.AddHealthChecks();
 
-            //services.AddDbContext<HousePlantsContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("HousePlantsContext")));
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<HousePlantsContext>();
 
-            services.AddDbContext<HousePlantsContext>(options =>
-            {
-                var connectionStringBuilder =
-                    new SqlConnectionStringBuilder(Configuration.GetConnectionString("HousePlantsContext"));
-
-                options.UseSqlServer(
-                    connectionStringBuilder.ConnectionString, builder => builder.UseNodaTime());
-            }); 
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

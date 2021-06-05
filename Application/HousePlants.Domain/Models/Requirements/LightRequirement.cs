@@ -1,11 +1,9 @@
-#nullable enable
 using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace HousePlants.Domain.Models
+namespace HousePlants.Domain.Models.Requirements
 {
-    //[Flags]
+    [Flags]
     public enum LightRequirement : short
     {
         None = 0,

@@ -6,7 +6,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using HousePlants.Domain;
 using HousePlants.Domain.Models;
+using HousePlants.Domain.Models.Taxonomy;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
@@ -15,6 +17,9 @@ namespace HousePlants.Data
     public class HousePlantsContext : DbContext
     {
         public DbSet<Plant> Plants { get; set; }
+        public DbSet<Species> Species { get; set; }
+
+
 
         public HousePlantsContext (DbContextOptions<HousePlantsContext> options)
             : base(options)

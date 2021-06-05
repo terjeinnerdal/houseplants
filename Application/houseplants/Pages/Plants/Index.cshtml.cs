@@ -1,29 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HousePlants.Data;
+using HousePlants.Domain;
 using HousePlants.Domain.Models;
 
 namespace HousePlants.Pages.Plants
 {
     public class IndexModel : PageModel
     {
-        private readonly HousePlantsContext _context;
-
-        public IndexModel(HousePlantsContext context)
+        internal class MapperProfile : Profile
         {
-            _context = context;
+            public MapperProfile()
+            {
+                CreateMap<Plant, PlantDto>(MemberList.Destination);
+                CreateMap<PlantDto, Plant>();
+            }
         }
 
-        public IList<Plant> Plant { get;set; }
+        private readonly HousePlantsContext _context;
+        private readonly IMapper _mapper;
+
+        public IndexModel(HousePlantsContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        [BindProperty] public int NumberOfSpecies => _context.Species.Distinct().Count();
+        [BindProperty] public int NumberOfPlants => Plants.Count;
+        [BindProperty] public IList<PlantDto> Plants { get; set; }
 
         public async Task OnGetAsync()
         {
-            Plant = await _context.Plants.ToListAsync();
+            Plants = _mapper.Map<List<PlantDto>>(await _context.Plants.ToListAsync());
         }
     }
 }
