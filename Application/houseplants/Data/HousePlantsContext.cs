@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HousePlants.Domain;
-using HousePlants.Domain.Models;
 using HousePlants.Domain.Models.Taxonomy;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
@@ -18,6 +12,9 @@ namespace HousePlants.Data
     {
         public DbSet<Plant> Plants { get; set; }
         public DbSet<Species> Species { get; set; }
+        public DbSet<Genus> Genus { get; set; }
+        public DbSet<Family> Families { get; set; }
+
 
 
 
