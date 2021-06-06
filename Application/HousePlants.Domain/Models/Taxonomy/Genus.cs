@@ -21,9 +21,6 @@
         public Family? Family { get; set; }
         public PlantPassport? PlantPassport { get; set; }
 
-        public Genus(string name) : base(name)
-        {
-            Arcanea = Arcanea.Genus;
-        }
+        public Genus(string name) : base(name, Arcanea.Genus) { }
     }
 }

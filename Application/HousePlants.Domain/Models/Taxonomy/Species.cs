@@ -4,12 +4,16 @@ namespace HousePlants.Domain.Models.Taxonomy
 {
     public class Species : TaxonomyBase, IEquatable<Species>
     {
-        public Genus? Genus { get; set; }
-        public PlantPassport? PlantPassport { get; set; }
+        public Genus Genus { get; set; }
+        public PlantPassport PlantPassport { get; set; }
         
-        public Species(string name) : base(name)
+        public Species(string name) : base(name, Arcanea.Species)
         {
-            Arcanea = Arcanea.Species;
+            PlantPassport = PlantPassport.StandardPassport;
+        }
+        public Species(string name, Genus genus) : base(name, Arcanea.Species)
+        {
+            Genus = genus;
             PlantPassport = PlantPassport.StandardPassport;
         }
 
@@ -27,6 +31,5 @@ namespace HousePlants.Domain.Models.Taxonomy
         }
 
         public override int GetHashCode() => Id.GetHashCode();
-
     }
 }

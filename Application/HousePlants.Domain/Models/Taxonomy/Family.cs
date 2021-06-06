@@ -2,9 +2,6 @@
 {
     public class Family : TaxonomyBase
     {
-        public Family(string name) : base(name)
-        {
-            Arcanea = Arcanea.Family;
-        }
+        public Family(string name) : base(name, Arcanea.Family) { }
     }
 }
