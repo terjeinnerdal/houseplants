@@ -11,18 +11,14 @@
     <a asp-page="Create">Create New</a>
 </p>
 
-<div>Number of plants: @Model.NumberOfPlants</div>
+<div>Number of families: @Model.NumberOfFamilies</div>
+<div>Number of genuses: @Model.NumberOfGenuses</div>
 <div>Number of species: @Model.NumberOfSpecies</div>
+<div>Number of plants: @Model.NumberOfPlants</div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Plants[0].CommonName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Plants[0].LatinName)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Plants[0].AquiredDate)
             </th>
@@ -36,12 +32,6 @@
         @foreach (var item in Model.Plants)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommonName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LatinName)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.AquiredDate)
                 </td>

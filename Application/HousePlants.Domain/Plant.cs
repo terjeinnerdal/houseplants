@@ -10,77 +10,35 @@ using NodaTime;
 #nullable enable
 namespace HousePlants.Domain
 {
-    public enum Month
-    {
-        NotSet = 0,
-        January = 1,
-        February = 2,
-        March = 3,
-        April = 4,
-        May = 5,
-        June = 6,
-        July = 7,
-        August = 8,
-        September = 9,
-        October = 10,
-        November = 11,
-        December = 12
-    }
-
-    // todo: this should be an owned entity type. But is it owned by Plant or Species. I would say species at first glance.
-    [Owned]
-    public sealed class FloweringPeriod
-    {
-        public Month Start { get; private set; }
-        public Month End { get; private set; }
-
-        public FloweringPeriod(Month start, Month end)
-        {
-            if (start == Month.NotSet)
-                throw new ArgumentException("FloweringPeriod must have a start date", nameof(start));
-
-            if (end == Month.NotSet)
-                throw new ArgumentException("FloweringPeriod must have an end date", nameof(end));
-
-            Start = start;
-            End = end;
-        }
-    }
-
-    [Owned]
+   [Owned]
     public class PlantPassport
     {
-        //public Guid Id { get; set; }
         public bool Perennial { get; set; }
-        public FloweringPeriod? FloweringPeriod { get; set; }
         public LightRequirement LightRequirement { get; set; }
         public WaterRequirement WaterRequirement { get; set; }
         public NutrientRequirement NutrientRequirement { get; set; }
         public SoilRequirement SoilRequirement { get; set; }
-        public int HeightInCentimeters { get; set; }
-        public bool Edible { get; set; } = false;
+        public WateringTechnique WateringTechnique { get; set; }
+        public int MinimumTemperature { get; set; }
 
         public static PlantPassport StandardPassport => new PlantPassport
         {
             LightRequirement = LightRequirement.IndirectSunlight,
             WaterRequirement = WaterRequirement.Medium,
             NutrientRequirement = NutrientRequirement.Medium,
-            SoilRequirement = SoilRequirement.StandardMix
+            SoilRequirement = SoilRequirement.StandardMix,
+            WateringTechnique = WateringTechnique.WetDry,
+            MinimumTemperature = 15
         };
 
         public static PlantPassport SucculentPassport => new PlantPassport
         {
-            LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.FullSunlight,
+            LightRequirement = LightRequirement.FullSunlight,
             WaterRequirement = WaterRequirement.Low,
             NutrientRequirement = NutrientRequirement.Low,
-            SoilRequirement = SoilRequirement.Sandy | SoilRequirement.Coarse
-        };
-        public static PlantPassport CactusPassport => new PlantPassport
-        {
-            LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.FullSunlight,
-            WaterRequirement = WaterRequirement.Low,
-            NutrientRequirement = NutrientRequirement.Low,
-            SoilRequirement = SoilRequirement.Sandy | SoilRequirement.Coarse
+            SoilRequirement = SoilRequirement.Sandy,
+            WateringTechnique = WateringTechnique.WetBoneDry,
+            MinimumTemperature = 10
         };
     }
 
@@ -91,31 +49,15 @@ namespace HousePlants.Domain
         High
     }
 
+    // User owned entity
     public class Plant : BaseEntity
     {
-        [Flags]
-        public enum Legends
-        {
-            None,
-            Survivor = 1,
-            OldBoy = 2,
-            Neglected = 4,
-            LowMaint = 8,
-            HighMaint = 16,
-            FamilyMember = 32
-        }
-
         // This is Species, most people proably just want to write ficus lyrata.
-        [StringLength(128)] public string? LatinName { get; set; }
+        [StringLength(128)] public string? LatinName => Species?.Name;
         [StringLength(128)] public string? CommonName { get; set; }
         public DateTime? AquiredDate { get; set; }
         public int MinimumTemperature { get; set; }
         public int MaximumTemperature { get; set; }
-        public LightRequirement? LightRequirement { get; set; }
-        public WaterRequirement? WaterRequirement { get; set; }
-        public SoilRequirement? SoilRequirement { get; set; }
-        public WateringTechnique WateringTechnique { get; set; }
-        public Legends? Status { get; set; }
 
         public Species? Species { get; set; }
         public IList<Tag>? Tags { get; set; } = new List<Tag>();
@@ -140,7 +82,7 @@ namespace HousePlants.Domain
 
                 return title ?? string.Empty;
             }
-            set { _ = value; }
+            set => _ = value;
         }
     }
 

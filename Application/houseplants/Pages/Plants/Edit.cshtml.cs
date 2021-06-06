@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using HousePlants.Data;
 using HousePlants.Domain;
 using HousePlants.Domain.Models;
+using HousePlants.Domain.Models.Requirements;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HousePlants.Pages.Plants
 {
@@ -32,11 +34,12 @@ namespace HousePlants.Pages.Plants
             }
 
             Plant = await _context.Plants.FirstOrDefaultAsync(m => m.Id == id);
-
+            
             if (Plant == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
@@ -61,10 +64,8 @@ namespace HousePlants.Pages.Plants
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return RedirectToPage("./Index");
@@ -73,6 +74,20 @@ namespace HousePlants.Pages.Plants
         private bool PlantExists(Guid id)
         {
             return _context.Plants.Any(e => e.Id == id);
+        }
+
+        public LightRequirement[] GetSelectedLightRequirements(LightRequirement lightRequirement)
+        {
+            var result = new List<LightRequirement>();
+            foreach(LightRequirement r in Enum.GetValues(typeof(LightRequirement)))
+            {
+                if ((lightRequirement & r) != 0)
+                {
+                    result.Add(r);
+                }
+            }
+
+            return result.ToArray();
         }
     }
 }

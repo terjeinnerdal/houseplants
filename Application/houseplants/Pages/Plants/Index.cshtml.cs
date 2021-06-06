@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -17,11 +19,17 @@ namespace HousePlants.Pages.Plants
         {
             public MapperProfile()
             {
-                CreateMap<Plant, PlantDto>(MemberList.Destination);
-                CreateMap<PlantDto, Plant>();
+                CreateMap<Plant, PlantIndexVm>(MemberList.Destination);
             }
         }
 
+        public class PlantIndexVm
+        {
+            [HiddenInput]
+            public Guid Id { get; private set; }
+            public string Title { get; set; }
+            [DataType(DataType.Date)] public DateTime AquiredDate { get; set; }
+        }
         private readonly HousePlantsContext _context;
         private readonly IMapper _mapper;
 
@@ -31,13 +39,18 @@ namespace HousePlants.Pages.Plants
             _mapper = mapper;
         }
 
-        [BindProperty] public int NumberOfSpecies => _context.Species.Distinct().Count();
-        [BindProperty] public int NumberOfPlants => Plants.Count;
-        [BindProperty] public IList<PlantDto> Plants { get; set; }
+        public int NumberOfFamilies => _context.Families.Distinct().Count();
+        public int NumberOfGenuses => _context.Genus.Distinct().Count();
+        public int NumberOfSpecies => _context.Species.Distinct().Count();
+        public int NumberOfPlants => Plants.Count;
+        [BindProperty] public IList<PlantIndexVm> Plants { get; set; }
 
         public async Task OnGetAsync()
         {
-            Plants = _mapper.Map<List<PlantDto>>(await _context.Plants.ToListAsync());
+            Plants = _mapper.Map<List<PlantIndexVm>>(
+                await _context.Plants
+                    .OrderBy(p => p.Species.Genus.Name)
+                    .ToListAsync());
         }
     }
 }

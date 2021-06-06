@@ -60,10 +60,7 @@ namespace HousePlants.Data
             #region Genuses
             var alocasioGenus = new Genus("Alocasio") { Family = araceaeFamily };
             var chlorophytumGenus = new Genus("Chlorophytum") { Family = asparagaceaeFamily };
-            var cactaceaeGenus = new Genus("Cactaceae")
-            {
-                PlantPassport = PlantPassport.CactusPassport
-            };
+            var cactaceaeGenus = new Genus("Cactaceae") { PlantPassport = PlantPassport.SucculentPassport };
             var ceropegiaGenus = new Genus("Ceropegia") { Family = apocynaceaeFamily };
             var chamaedoreaGenus = new Genus("Chamaedorea") { Family = araceaeFamily };
             var coffeaGenus = new Genus("Coffea") { Family = rubiaceaeFamily };
@@ -104,22 +101,10 @@ namespace HousePlants.Data
             {
                 Genus = ficusGenus,
             };
-            var lyrataBambinoSpecies = new Species("Ficus Lyrata Bambino", ficusGenus)
-            {
-                Genus = ficusGenus,
-            };
-            var cyathistipulaSpecies = new Species("Ficus Cyathistipula", ficusGenus)
-            {
-                Genus = ficusGenus,
-            };
-            var elasticaSpecies = new Species("Ficus Elastica", ficusGenus)
-            {
-                Genus = ficusGenus,
-            };
-            var benjaminaSpecies = new Species("Ficus Benjamina", ficusGenus)
-            {
-                Genus = ficusGenus,
-            };
+            var lyrataBambinoSpecies = new Species("Ficus Lyrata Bambino", ficusGenus);
+            var cyathistipulaSpecies = new Species("Ficus Cyathistipula", ficusGenus);
+            var elasticaSpecies = new Species("Ficus Elastica", ficusGenus);
+            var benjaminaSpecies = new Species("Ficus Benjamina", ficusGenus);
             #endregion
 
             #region Succulents species
@@ -130,7 +115,7 @@ namespace HousePlants.Data
             var echinocactusGrusoniiSpecies = new Species("Echinocactus Grusonii", echinocactusGenus) { PlantPassport = PlantPassport.SucculentPassport };
             var gasteriaCarinataSpecies = new Species("Gasteria Carinata", gasteriaGenus) { PlantPassport = PlantPassport.SucculentPassport };
             var gasteriaDuvalSpecies = new Species("Gasteria Duval", gasteriaGenus) { PlantPassport = PlantPassport.SucculentPassport };
-            var pilosocereusPachycladusSpecies = new Species("Pilosocereus PachycladusSpecies", pilosocereusGenus) { PlantPassport = PlantPassport.CactusPassport };
+            var pilosocereusPachycladusSpecies = new Species("Pilosocereus PachycladusSpecies", pilosocereusGenus) { PlantPassport = PlantPassport.SucculentPassport };
             #endregion
 
             #region Pilea species
@@ -144,17 +129,7 @@ namespace HousePlants.Data
             var ceropegiaWoodiiSpecies = new Species("Ceropegia Woodii", ceropegiaGenus);
             var chamaedoreaElegansSpecies = new Species("Chamaedorea Elegans", chamaedoreaGenus);
             var chlorophytumComosumSpecies = new Species("Chlorophytum Comosum", chlorophytumGenus);
-            var coffeaArabicaSpecies = new Species("Coffea Arabica", coffeaGenus)
-            {
-                PlantPassport = new PlantPassport
-                {
-                    Edible = true,
-                    HeightInCentimeters = 200,
-                    LightRequirement = LightRequirement.IndirectSunlight,
-                    WaterRequirement = WaterRequirement.Medium,
-                    NutrientRequirement = NutrientRequirement.Medium
-                }
-            };
+            var coffeaArabicaSpecies = new Species("Coffea Arabica", coffeaGenus);
             var dracaneaFragransSpecies = new Species("Dracaena Fragrans", dracaneaGenus);
             var epipremnumAureumSpecies = new Species("Epipremnum Aureum", epipremnumGenus);
             var fittoniaAlbivensisSpecies = new Species("Fittonia Albivensis", fittoniaGenus);
@@ -183,54 +158,36 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Fiolinfiken",
-                LatinName = "Ficus Lyrata",
-                Description = "Kjøpt på IKEA, kan bli gigantisk.",
                 AquiredDate = DateTime.Parse("20.09.2020", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
                 MinimumTemperature = 12,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = lyrataSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Ficus Lyrata Bambino",
-                Description = "The Bambino has smaller leaves than the orgininal Ficus Lyrata.",
                 AquiredDate = DateTime.Parse("22.11.2020", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = lyrataBambinoSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Lærbladfiken",
-                LatinName = "Ficus Cyathistipula",
-                Description = "",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = cyathistipulaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
-                LatinName = "Ficus Elastica",
                 CommonName = "Gummi fiken",
-                Description = "Unlabeled Fig bought at Rema 1000 Sunndalsøra. Leaves are almost black.",
                 AquiredDate = DateTime.Parse("26.01.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = elasticaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
-                LatinName = "Fixus Benjamina",
                 Description = "Bought at IKEA. Beatiful plant! Really thrives.",
                 AquiredDate = DateTime.Parse("01.02.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = benjaminaSpecies
             };
             context.Add(plant);
@@ -239,33 +196,20 @@ namespace HousePlants.Data
             #region Succulents
             plant = new Plant
             {
-                LatinName = "Echiveria Gibbiflora",
                 Description = "Kjøpt på IKEA. Lilla sukkulent.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetBoneDry,
-                SoilRequirement = SoilRequirement.Sandy,
                 Species = echiveriaGibbifloraSpecies
             };
             plant = new Plant
             {
-                LatinName = "Gasteria Duval",
                 Description = "Kjøpt på IKEA. Den lille som jeg trodde var Aloe Vera",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
-                LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetBoneDry,
-                SoilRequirement = SoilRequirement.Sandy,
                 Species = gasteriaDuvalSpecies
             };
             plant = new Plant
             {
-                CommonName = "Succulent",
-                LatinName = "Gasteria Carinata",
-                Description = "Kjøpt på IKEA. Den kule",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
-                LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetBoneDry,
-                SoilRequirement = SoilRequirement.Sandy,
+                MinimumTemperature = 10,
                 Species = gasteriaCarinataSpecies
             };
             #endregion
@@ -274,24 +218,16 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Søylekaktus",
-                LatinName = "Pilosocereus Pachycladus",
                 Description = "Kjøpt på IKEA.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.FullSunlight,
-                WateringTechnique = WateringTechnique.WetBoneDry,
-                SoilRequirement = SoilRequirement.Sandy,
                 Species = pilosocereusPachycladusSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Tønnekaktus",
-                LatinName = "Echinocactus Grusonii",
                 Description = "Kjøpt på Coop Øra.",
                 AquiredDate = DateTime.Parse("26.03.2012", format),
-                LightRequirement = LightRequirement.FullSunlight,
-                WateringTechnique = WateringTechnique.WetBoneDry,
-                SoilRequirement = SoilRequirement.Sandy,
                 Species = echinocactusGrusoniiSpecies
             };
             context.Add(plant);
@@ -301,34 +237,25 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Kinesisk pengeplante",
-                LatinName = "Pilea Peperomia",
                 Description = "Kjøpt på Meny Solsiden. Vokser som en superhelt.",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix,
+                Species = pileaPeperomiaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Rain drop",
-                LatinName = "Pilea Peperomia Polybotria",
                 Description = "Kjøpt på Plantasjen. Vokser dårligst av de tre Pileaene.",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix,
+                Species = pileaPeperomiaPolybotria
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Melonskall",
-                LatinName = "Pilea Peperomia Argytreia",
                 Description = "Kjøpt på Plantasjen. Bladene ligner på melonskall.",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix,
+                Species = pileaPeperomiaArgytreia
             };
             context.Add(plant);
             #endregion
@@ -337,11 +264,8 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Vindusblad (Rema 1000)",
-                LatinName = "Monstera Deliciosa",
                 Description = "Kjøpt på Rema 1000 Øra. Står i pose med Plantasjen Premium Jord og Perlitt.",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = monsteraDeliciosaSpecies
             };
             context.Add(plant);
@@ -350,21 +274,14 @@ namespace HousePlants.Data
                 CommonName = "Monstera Cuttings Plastic Bag",
                 Description = "4 Stiklinger tatt fra den som ble kjøpt på Plantasjen som hadde fullt av tusenbein i seg og derfor ble kastet.",
                 AquiredDate = DateTime.Parse("11.01.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry,
-                MinimumTemperature = 15,
-                MaximumTemperature = 30,
                 Species = monsteraDeliciosaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
-                LatinName = "Monstera Deliciosa",
                 CommonName = "Monstera Cutting Self Watering",
                 Description = "4 Stiklinger tatt fra den som ble kjøpt på Plantasjen som hadde fullt av tusenbein i seg og derfor ble kastet.",
                 AquiredDate = DateTime.Parse("11.01.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = monsteraDeliciosaSpecies
             };
             context.Add(plant);
@@ -374,13 +291,8 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Dvergfjærpalme",
-                LatinName = "Chamaedorea Elegans",
                 Description = "Planten er sensitiv for overvanning. Dette kan være grunnen hvis bladene begynner å bli brune.",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                WaterRequirement = WaterRequirement.Medium,
-                SoilRequirement = SoilRequirement.PeatBasedMIx,
                 Species = chamaedoreaElegansSpecies
             };
             context.Add(plant);
@@ -388,11 +300,8 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Fredslilje",
-                LatinName = "Spathiphyllum",
                 Description = "Delt opp i 3 potter.",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = spathiphyllumSpecies
 
             };
@@ -401,12 +310,9 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Gullranke",
-                LatinName = "Epipremnum Aureum",
                 Description = "Kjøpt på Strå Blomster. " +
                               "Vannes 1 gang i uka og holdes unna direkte sollys, kan trives i litt mørkere deler av huset.",
                 AquiredDate = DateTime.Parse("06.01.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = epipremnumAureumSpecies
             };
             context.Add(plant);
@@ -414,11 +320,8 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Nerve plant",
-                LatinName = "Fittonia albivenis",
                 Description = "Kjøpt på Strå Blomster",
                 AquiredDate = DateTime.Parse("06.01.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = fittoniaAlbivensisSpecies
             };
             context.Add(plant);
@@ -426,7 +329,6 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Elefantøre",
-                LatinName = "Alocasia",
                 Description = "Kjøpt på Plantasjen. Den blir mellom 25-40 cm høy og er en svært dekorativ stueplante, men pass på; denne vakringen er nemlig giftig!" +
                 "- Denne planten trives best med en lys plassering, uten direkte sollys. Den liker stuetemperatur fra 15 grader og oppover." +
                 "- Den liker normal vanning, dvs at den bør holdes jevnt fuktig; ikke for mye, ikke for lite vann!" +
@@ -438,80 +340,54 @@ namespace HousePlants.Data
                 "Vannes sparsommelig, men jevnt inntil den ser ut til å våkne til igjen! Da kan du gjenoppta normal vanning.",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 MinimumTemperature = 15,
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = alocasioAmazonicaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Svigermors tunge",
-                LatinName = "Sansevieria Laurentil",
                 Description = "Kjøpt på IKEA. The one with yellow edges.",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetBoneDry,
                 Species = sansevieriaLaurentilSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Svigermors tunge",
-                LatinName = "Sansevieria Trifasciata",
                 Description = "Kjøpt på IKEA. Ikke gul/grønn fargekombinasjon slik som den andre.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetBoneDry,
-                SoilRequirement = SoilRequirement.StandardMix,
                 Species = sansevieriaTrifiasciataSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Venusfluefanger",
-                LatinName = "Dionaea Muscipla",
                 Description = "Kjøpt på IKEA.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.FullSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix,
                 Species = dionaeaMuscipula
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Paraplytre",
-                LatinName = "Pachira Aquatica",
                 Description = "Kjøpt på IKEA.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix,
                 Species = pachiraAquaticaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Marmorlanterne",
-                LatinName = "Ceropegia Woodii",
                 Description = "Kjøpt på IKEA.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix,
                 Species = ceropegiaWoodiiSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Dragetre",
-                LatinName = "Dracaena Fragrans",
                 Description = "Kjøpt på IKEA. Miniplante, står enda i den orgiginale 9cm potta. Bør sjekke om denne kan ompottes.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry,
-                WaterRequirement = WaterRequirement.Low,
-                SoilRequirement = SoilRequirement.StandardMix,
                 MinimumTemperature = 12,
                 Species = dracaneaFragransSpecies
             };
@@ -519,41 +395,28 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Kaffeplante",
-                LatinName = "Coffea Arabica",
                 Description = "Kjøpt på IKEA.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix,
                 Species = coffeaArabicaSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Spider plant, Grønnrenner",
-                LatinName = "Chlorophytum comosum",
                 Description = "Kjøpt på Meny Solsiden. Er reversert variegata på denne med grønn stripe i midten av bladene. Har allerede skutt ut en \"pup\"." +
                               "Veldig voksevillig, katter elsker den pga. dens hallusinogene egenskaper. Har noen brune tupper, enten for mye gjødsel eller for lav luftfuktighet.",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry,
                 Species = chlorophytumComosumSpecies
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Arrow head",
-                LatinName = "Syngonium podophyllum",
                 Description = "Kjøpt på Meny sammen med spider plant. Tror dette er en 'Pixie' eller en 'Holly'. " +
                               "Tåler godt å stå i vinduskarmen på stua enda, men følg med fra Juni-August. " +
                               "Tålte ikke kulden hjem fra Meny helt, mistet mange blader men har kommet seg og vokser helt vilt. " +
                               "Virker meget hardfør! ",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry,
-                WaterRequirement = WaterRequirement.Medium,
-                SoilRequirement = SoilRequirement.StandardMix,
-                Status = Plant.Legends.LowMaint | Plant.Legends.Survivor,
                 Species = syngoniumPodophyllumSpecies
             };
             context.Add(plant);
@@ -564,30 +427,20 @@ namespace HousePlants.Data
             plant = new Plant
             {
                 CommonName = "Orangu",
-                LatinName = "",
                 Description = "Har hatt denne lengst sammen med tønnekaktusen. Vokser som en superhelt. " +
                               "Har overlevd i alle år i alle kriker og kroker i kåken." +
                               "Har begynt å gro vorter på den høyeste grenen igjen nå(27 mars 2021). " +
                               "Sto kaldt hele desember/januar. Pottet om sommeren 2020. " +
                               "Har generelt fått lite oppmerksomhet, lys eller annen omsorg, men står lyst nå etter ompotting.",
                 AquiredDate = DateTime.Parse("26.03.2012", format),
-                LightRequirement = LightRequirement.FullSunlight | LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetBoneDry,
-                SoilRequirement = SoilRequirement.Sandy,
-                Status = Plant.Legends.FamilyMember | Plant.Legends.LowMaint | Plant.Legends.Neglected | Plant.Legends.Survivor,
             };
             context.Add(plant);
             plant = new Plant
             {
                 CommonName = "Blåstjerne",
-                LatinName = "",
                 Description = "Kjøpt på Meny sammen med spider plant. " +
                               "Tålte kulden hjem fra Meny bra også. Virker meget hardfør!",
                 AquiredDate = DateTime.Parse("05.02.2021", format),
-                LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetBoneDry | WateringTechnique.WetDry,
-                SoilRequirement = SoilRequirement.StandardMix | SoilRequirement.Coarse,
-                Status = Plant.Legends.LowMaint | Plant.Legends.Survivor,
             };
             context.Add(plant);
             #endregion
