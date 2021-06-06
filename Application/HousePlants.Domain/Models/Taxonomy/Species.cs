@@ -10,6 +10,7 @@ namespace HousePlants.Domain.Models.Taxonomy
         public Species(string name) : base(name)
         {
             Arcanea = Arcanea.Species;
+            PlantPassport = PlantPassport.StandardPassport;
         }
 
         public bool Equals(Species? other)
