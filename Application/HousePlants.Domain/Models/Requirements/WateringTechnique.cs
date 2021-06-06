@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HousePlants.Domain.Models.Requirements
 {
-    [Flags]
     public enum WaterRequirement : short
     {
         None = 0,
