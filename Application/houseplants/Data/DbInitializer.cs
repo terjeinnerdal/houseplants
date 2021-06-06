@@ -2,10 +2,8 @@
 using System.Globalization;
 using System.Linq;
 using HousePlants.Domain;
-using HousePlants.Domain.Models;
 using HousePlants.Domain.Models.Requirements;
 using HousePlants.Domain.Models.Taxonomy;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 
 namespace HousePlants.Data
@@ -24,10 +22,10 @@ namespace HousePlants.Data
 
             context.Database.Migrate();
 
-            //if (context.Plants.Any())
-            //{
-            //    return;
-            //}
+            if (context.Plants.Any())
+            {
+                return;
+            }
 
             var rubiaceaeFamily = new Family("Rubiaceae");
             var moraceaeFamily = new Family("Moraceae");
@@ -39,32 +37,101 @@ namespace HousePlants.Data
                               "leaves and a unique form of photosynthesis, known as Crassulacean acid metabolism (CAM)."
             };
             var asphodelaceaeFamily = new Family("Asphodelaceae");
-            var urticaceaeFamily = new Family("Urticaceae") {
+            var urticaceaeFamily = new Family("Urticaceae")
+            {
                 Description = "The Urticaceae are a family, the nettle family, of flowering plants."
             };
-
+            var araceaeFamily = new Family("Araceae");
+            var piperaceaeFamily = new Family("Piperaceae");
+            var acanthaceaeFamily = new Family("Acanthaceae");
+            var asparagaceaeFamily = new Family("Asparagaceae");
             // Genuses
+            var cactaceaeGenus = new Genus("Cactaceae")
+            {
+                PlantPassport = PlantPassport.CactusPassport
+            };
             var coffeaGenus = new Genus("Coffea");
             var echinocactusGenus = new Genus("Echinocactus");
             var echiveriaGenus = new Genus("Echiveria");
-
-            var ficusGenus = new Genus("Ficus") {
+            var ficusGenus = new Genus("Ficus")
+            {
                 Description =
                     "Ficus is a genus of about 850 species of woody trees, shrubs, vines, epiphytes and " +
                     "hemiepiphytes in the family Moraceae. Collectively known as fig trees or figs, they " +
                     "are native throughout the tropics with a few species extending into the semi-warm temperate zone.",
-                Family = moraceaeFamily
+                Family = moraceaeFamily,
             };
-
             var gasteriaGenus = new Genus("Gasteria");
-            var pileaGenus = new Genus("Pilea") {
-                Description =
-                    "Pilea, with 600–715 species, is the largest genus of flowering plants in the nettle family Urticaceae, and one of the larger genera in the Urticales. " +
-                    "It is distributed throughout the tropics, subtropics, and warm temperate regions (with the exception of Australia and New Zealand)."
+            var pilosocereusGenus = new Genus("Pilosocereus");
+            var chamaedoreaGenus = new Genus("Chamaedorea") { Family = araceaeFamily };
+            var monsteraGenus = new Genus("Monstera")
+            {
+                Family = araceaeFamily,
             };
-            var pilosocereusGenus = new Genus( "Pilosocereus");
-
+            var pileaGenus = new Genus("Pilea")
+            {
+                Description =
+                    "Pilea, with 600–715 species, is the largest genus of flowering plants in the nettle family " +
+                    "Urticaceae, and one of the larger genera in the Urticales. It is distributed throughout the " +
+                    "tropics, subtropics, and warm temperate regions (with the exception of Australia and New Zealand).",
+                Family = piperaceaeFamily
+            };
+            var spathiphyllumGenus = new Genus("Spathiphyllum") { Family = araceaeFamily };
+            var epipremnumGenus = new Genus("Epipremnum") { Family = araceaeFamily };
+            var fittoniaGenus = new Genus("Fittonia") {Family = acanthaceaeFamily };
+            var alocasioGenus = new Genus("Alocasio") {Family = araceaeFamily };
+            var sansevieriaGenus = new Genus("Sansevieria") {Family = asparagaceaeFamily};
             // Species
+            #region Fig species
+            var lyrataSpecies = new Species("Ficus Lyrata")
+            {
+                Genus = ficusGenus,
+            };
+            var lyrataBambinoSpecies = new Species("Ficus Lyrata Bambino")
+            {
+                Genus = ficusGenus,
+            };
+            var cyathistipulaSpecies = new Species("Ficus Cyathistipula")
+            {
+                Genus = ficusGenus,
+            };
+            var elasticaSpecies = new Species("Ficus Elastica")
+            {
+                Genus = ficusGenus,
+            };
+            var benjaminaSpecies = new Species("Ficus Benjamina")
+            {
+                Genus = ficusGenus,
+            };
+            #endregion
+
+            #region Succulents species
+            var echiveriaGibbifloraSpecies = new Species("Echeveria Gibbiflora") { Genus = echiveriaGenus, PlantPassport = PlantPassport.SucculentPassport };
+            var gasteriaCarinataSpecies = new Species("Gasteria Carinata") { Genus = echiveriaGenus, PlantPassport = PlantPassport.SucculentPassport };
+            var gasteriaDuvalSpecies = new Species("Gasteria Duval") { Genus = echiveriaGenus, PlantPassport = PlantPassport.SucculentPassport };
+            var echinocactusGrusoniiSpecies = new Species("Echinocactus Grusonii") { Genus = echiveriaGenus, PlantPassport = PlantPassport.SucculentPassport };
+            #endregion
+
+            #region Cactus species
+            var pilosocereusPachycladusSpecies = new Species("Pilosocereus PachycladusSpecies") { };
+
+            #endregion
+
+            #region Pilea species
+            var pileaPeperomiaSpecies = new Species("Pilea Peperomia") { Genus = pileaGenus };
+            var pileaPeperomiaPolybotria = new Species("Pilea Peperomia Polybotria") { Genus = pileaGenus };
+            var pileaPeperomiaArgytreia = new Species("Pilea Peperomia Argytreia") { Genus = pileaGenus };
+            #endregion
+
+            #region Other species
+            var monsteraDeliciosaSpecies = new Species("Monstera Deliciosa")
+            {
+                Genus = monsteraGenus,
+            };
+            var spathiphyllumSpecies = new Species("Spathiphyllum Unknown") { Genus = spathiphyllumGenus };
+            var epipremnumAureumSpecies = new Species("Epipremnum Aureum") { Genus = epipremnumGenus };
+            var alocasioAmazonicaSpecies = new Species("Alocasia Amazonica") {Genus = alocasioGenus };
+            var chamaedoreaElegansSpecies = new Species("Chamaedorea Elegans") { Genus = chamaedoreaGenus };
             var coffeaArabicaSpecies = new Species("Coffea Arabica")
             {
                 PlantPassport = new PlantPassport
@@ -76,19 +143,11 @@ namespace HousePlants.Data
                     NutrientRequirement = NutrientRequirement.Medium
                 }
             };
-            var lyrataSpecies = new Species("Ficus Lyrata");
-            var lyrataBambinoSpecies = new Species("Ficus Lyrata Bambino");
-            var cyathistipulaSpecies = new Species("Ficus Cyathistipula");
-            var elasticaSpecies = new Species("Ficus Elastica");
-            var benjaminaSpecies = new Species("Ficus Benjamina");
-            var echiveriaGibbifloraSpecies = new Species("Echeveria Gibbiflora");
-            var gasteriaCarinataSpecies = new Species("Gasteria Carinata");
-            var gasteriaDuvalSpecies = new Species("Gasteria Duval");
-            var pilosocereusPachycladusSpecies = new Species("Pilosocereus PachycladusSpecies");
-            var echinocactusGrusoniiSpecies = new Species("Echinocactus Grusonii");
-            
-            // Genus and family.
-            // Figs I know by the Genus Fixus. My cactus may be different genuses but in the family Cactiaceae
+            var fittoniaAlbivensisSpecies = new Species("Fittonia Albivensis") {Genus = fittoniaGenus};
+            var sansevieriaLaurentilSpecies = new Species("Sansevieria Laurentil") {Genus = sansevieriaGenus };
+            var sansevieriaTrifiasciataSpecies = new Species("Sansevieria Trifiasciata") {Genus = sansevieriaGenus };
+            #endregion
+
             // When viewing them I'd liker to order by
             // - Minimum temperature
             // - Watering requirements
@@ -221,6 +280,7 @@ namespace HousePlants.Data
                 Species = echinocactusGrusoniiSpecies
             };
             context.Add(plant);
+            // todo: identify
             plant = new Plant
             {
                 CommonName = "Orangu",
@@ -275,7 +335,7 @@ namespace HousePlants.Data
             context.Add(plant);
             #endregion
 
-            #region Other
+            #region Monstera
             plant = new Plant
             {
                 CommonName = "Vindusblad (Rema 1000)",
@@ -283,7 +343,8 @@ namespace HousePlants.Data
                 Description = "Kjøpt på Rema 1000 Øra. Står i pose med Plantasjen Premium Jord og Perlitt.",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
-                WateringTechnique = WateringTechnique.WetDry
+                WateringTechnique = WateringTechnique.WetDry,
+                Species = monsteraDeliciosaSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -294,8 +355,8 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
                 WateringTechnique = WateringTechnique.WetDry,
                 MinimumTemperature = 15,
-                MaximumTemperature = 30
-
+                MaximumTemperature = 30,
+                Species = monsteraDeliciosaSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -305,10 +366,13 @@ namespace HousePlants.Data
                 Description = "4 Stiklinger tatt fra den som ble kjøpt på Plantasjen som hadde fullt av tusenbein i seg og derfor ble kastet.",
                 AquiredDate = DateTime.Parse("11.01.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry
+                WateringTechnique = WateringTechnique.WetDry,
+                Species = monsteraDeliciosaSpecies
             };
             context.Add(plant);
+            #endregion
 
+            #region Other
             plant = new Plant
             {
                 CommonName = "Dvergfjærpalme",
@@ -318,7 +382,8 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
                 WaterRequirement = WaterRequirement.Medium,
-                SoilRequirement = SoilRequirement.PeatBasedMIx
+                SoilRequirement = SoilRequirement.PeatBasedMIx,
+                Species = chamaedoreaElegansSpecies
             };
             context.Add(plant);
 
@@ -330,7 +395,8 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
-                //Toxic = true
+                Species = spathiphyllumSpecies
+
             };
             context.Add(plant);
 
@@ -342,7 +408,8 @@ namespace HousePlants.Data
                               "Vannes 1 gang i uka og holdes unna direkte sollys, kan trives i litt mørkere deler av huset.",
                 AquiredDate = DateTime.Parse("06.01.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry
+                WateringTechnique = WateringTechnique.WetDry,
+                Species = epipremnumAureumSpecies
             };
             context.Add(plant);
 
@@ -353,7 +420,8 @@ namespace HousePlants.Data
                 Description = "Kjøpt på Strå Blomster",
                 AquiredDate = DateTime.Parse("06.01.2021", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetDry
+                WateringTechnique = WateringTechnique.WetDry, 
+                Species = fittoniaAlbivensisSpecies
             };
             context.Add(plant);
 
@@ -374,6 +442,7 @@ namespace HousePlants.Data
                 MinimumTemperature = 15,
                 LightRequirement = LightRequirement.IndirectSunlight,
                 WateringTechnique = WateringTechnique.WetDry,
+                Species = alocasioAmazonicaSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -383,7 +452,8 @@ namespace HousePlants.Data
                 Description = "Kjøpt på IKEA. The one with yellow edges.",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
-                WateringTechnique = WateringTechnique.WetBoneDry
+                WateringTechnique = WateringTechnique.WetBoneDry, 
+                Species = sansevieriaLaurentilSpecies
             };
             context.Add(plant);
             plant = new Plant
@@ -395,6 +465,7 @@ namespace HousePlants.Data
                 LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.Shade,
                 WateringTechnique = WateringTechnique.WetBoneDry,
                 SoilRequirement = SoilRequirement.StandardMix,
+                Species = sansevieriaTrifiasciataSpecies
             };
             context.Add(plant);
             plant = new Plant
