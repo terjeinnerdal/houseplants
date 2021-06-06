@@ -56,8 +56,32 @@ namespace HousePlants.Domain
         public LightRequirement LightRequirement { get; set; }
         public WaterRequirement WaterRequirement { get; set; }
         public NutrientRequirement NutrientRequirement { get; set; }
+        public SoilRequirement SoilRequirement { get; set; }
         public int HeightInCentimeters { get; set; }
         public bool Edible { get; set; } = false;
+
+        public static PlantPassport StandardPassport => new PlantPassport
+        {
+            LightRequirement = LightRequirement.IndirectSunlight,
+            WaterRequirement = WaterRequirement.Medium,
+            NutrientRequirement = NutrientRequirement.Medium,
+            SoilRequirement = SoilRequirement.StandardMix
+        };
+
+        public static PlantPassport SucculentPassport => new PlantPassport
+        {
+            LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.FullSunlight,
+            WaterRequirement = WaterRequirement.Low,
+            NutrientRequirement = NutrientRequirement.Low,
+            SoilRequirement = SoilRequirement.Sandy | SoilRequirement.Coarse
+        };
+        public static PlantPassport CactusPassport => new PlantPassport
+        {
+            LightRequirement = LightRequirement.IndirectSunlight | LightRequirement.FullSunlight,
+            WaterRequirement = WaterRequirement.Low,
+            NutrientRequirement = NutrientRequirement.Low,
+            SoilRequirement = SoilRequirement.Sandy | SoilRequirement.Coarse
+        };
     }
 
     public enum NutrientRequirement
