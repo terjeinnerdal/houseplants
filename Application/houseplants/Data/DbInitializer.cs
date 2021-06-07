@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using HousePlants.Domain;
-using HousePlants.Domain.Models.Requirements;
-using HousePlants.Domain.Models.Taxonomy;
+using HousePlants.Models;
+using HousePlants.Models.Requirements;
+using HousePlants.Models.Taxonomy;
 using Microsoft.EntityFrameworkCore;
 
 namespace HousePlants.Data

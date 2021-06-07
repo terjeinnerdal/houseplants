@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HousePlants.Domain.Models.Taxonomy
+namespace HousePlants.Models.Taxonomy
 {
     public class Species : TaxonomyBase, IEquatable<Species>
     {

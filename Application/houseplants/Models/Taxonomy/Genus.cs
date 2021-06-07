@@ -1,4 +1,4 @@
-﻿namespace HousePlants.Domain.Models.Taxonomy
+﻿namespace HousePlants.Models.Taxonomy
 {
     #region Probably never gonna use
     //public class Class : TaxonomyBase

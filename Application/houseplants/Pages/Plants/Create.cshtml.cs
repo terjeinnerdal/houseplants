@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using HousePlants.Data;
-using HousePlants.Domain;
-using HousePlants.Domain.Models;
-using HousePlants.Domain.Models.Requirements;
+using HousePlants.Models;
+using HousePlants.Models.Requirements;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 

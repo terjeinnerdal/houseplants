@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HousePlants.Data;
-using HousePlants.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using HousePlants.Domain.Models;
+using HousePlants.Models;
 
 namespace HousePlants.Pages.Plants
 {

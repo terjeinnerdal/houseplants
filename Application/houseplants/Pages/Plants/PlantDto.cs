@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using HousePlants.Domain.Models;
-using HousePlants.Domain.Models.Requirements;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousePlants.Pages.Plants

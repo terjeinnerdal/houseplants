@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace HousePlants.Domain
+namespace HousePlants.Models
 {    public enum Month 
     { 
         NotSet = 0, 

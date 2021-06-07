@@ -1,7 +1,6 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace HousePlants.Domain.Models.Requirements
+namespace HousePlants.Models.Requirements
 {
     public enum LightRequirement : short
     {

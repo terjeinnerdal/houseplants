@@ -4,81 +4,6 @@
     "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\houseplants\\HousePlants.csproj": {}
   },
   "projects": {
-    "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants.Domain\\HousePlants.Domain.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants.Domain\\HousePlants.Domain.csproj",
-        "projectName": "HousePlants.Domain",
-        "projectPath": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants.Domain\\HousePlants.Domain.csproj",
-        "packagesPath": "C:\\Users\\terje.SENTINEL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants.Domain\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\NuGet.Config",
-          "C:\\Users\\terje.SENTINEL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net5.0"
-        ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Mvc.DataAnnotations": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.EntityFrameworkCore.Abstractions": {
-              "target": "Package",
-              "version": "[5.0.6, )"
-            },
-            "NodaTime": {
-              "target": "Package",
-              "version": "[3.0.5, )"
-            },
-            "System.ComponentModel.Annotations": {
-              "target": "Package",
-              "version": "[5.0.0, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
     "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\houseplants\\HousePlants.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -105,11 +30,7 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {
-              "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants.Domain\\HousePlants.Domain.csproj": {
-                "projectPath": "C:\\Users\\terje.SENTINEL\\source\\repos\\houseplants\\Application\\HousePlants.Domain\\HousePlants.Domain.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {

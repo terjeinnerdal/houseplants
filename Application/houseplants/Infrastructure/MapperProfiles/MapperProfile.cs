@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HousePlants.Domain;
+using HousePlants.Models;
 using HousePlants.Pages.Plants;
 
 namespace HousePlants.Infrastructure.MapperProfiles

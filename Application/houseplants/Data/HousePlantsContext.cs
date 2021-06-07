@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HousePlants.Domain;
-using HousePlants.Domain.Models.Taxonomy;
+using HousePlants.Models;
+using HousePlants.Models.Taxonomy;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 

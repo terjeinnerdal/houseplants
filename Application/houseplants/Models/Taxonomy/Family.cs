@@ -1,4 +1,4 @@
-﻿namespace HousePlants.Domain.Models.Taxonomy
+﻿namespace HousePlants.Models.Taxonomy
 {
     public class Family : TaxonomyBase
     {

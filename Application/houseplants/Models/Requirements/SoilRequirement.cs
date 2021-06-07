@@ -1,4 +1,4 @@
-namespace HousePlants.Domain.Models.Requirements
+namespace HousePlants.Models.Requirements
 {
     public enum SoilRequirement : short
     {

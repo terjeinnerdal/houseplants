@@ -1,16 +1,19 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build-env
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+COPY ["houseplants.csproj", "."]
+RUN dotnet restore "houseplants.csproj"
+COPY . .
+RUN dotnet build "houseplants.csproj" -c Release -o /app/build
 
-# Copy everything else and build 
-COPY . ./
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+RUN dotnet publish "houseplants.csproj" -c Release -o /app/publish
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim 
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "aspnet-core-dotnet-core.dll"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "HousePlants.dll"]

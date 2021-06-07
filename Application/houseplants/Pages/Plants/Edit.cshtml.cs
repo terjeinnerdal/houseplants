@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HousePlants.Data;
-using HousePlants.Domain;
-using HousePlants.Domain.Models;
-using HousePlants.Domain.Models.Requirements;
+using HousePlants.Models;
+using HousePlants.Models.Requirements;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HousePlants.Pages.Plants

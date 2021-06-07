@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using HousePlants.Domain.Models.Requirements;
-using HousePlants.Domain.Models.Taxonomy;
+using HousePlants.Models.Requirements;
+using HousePlants.Models.Taxonomy;
 using Microsoft.EntityFrameworkCore;
-using NodaTime;
 
 #nullable enable
-namespace HousePlants.Domain
+namespace HousePlants.Models
 {
     [Owned]
     public class PlantPassport

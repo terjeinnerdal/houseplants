@@ -1,8 +1,7 @@
 ﻿#nullable enable
 using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace HousePlants.Domain.Models.Taxonomy
+namespace HousePlants.Models.Taxonomy
 {
     // Family -> Genus -> Species -> (Variety) -> Plants
     // Morocaea -> 

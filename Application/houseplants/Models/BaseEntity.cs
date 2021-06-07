@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using NodaTime;
 
-namespace HousePlants.Domain
+namespace HousePlants.Models
 {
     /// <summary>
     /// BaseEntity using a Guid for the Id and NodaTime types for the Created and Modified timestamps.

@@ -69,8 +69,4 @@
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\HousePlants.Domain\HousePlants.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
