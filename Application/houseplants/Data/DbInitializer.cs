@@ -93,6 +93,20 @@ namespace HousePlants.Data
             var sansevieriaGenus = new Genus("Sansevieria") { Family = asparagaceaeFamily };
             var spathiphyllumGenus = new Genus("Spathiphyllum") { Family = araceaeFamily };
             var syngoniumGenus = new Genus("Syngonium") { Family = araceaeFamily };
+            var nepetaGenus = new Genus("Nepeta")
+            {
+                Family = new Family("Lamiaceae"),
+                PlantPassport = new PlantPassport()
+                {
+                    LightRequirement = LightRequirement.FullSunlight,
+                    Perennial = true,
+                    WaterRequirement = WaterRequirement.Low,
+                    NutrientRequirement = NutrientRequirement.Medium,
+                    Edible = false,
+                    FloweringPeriod = new FloweringPeriod(Month.June, Month.October),
+                    Height = 40
+                }
+            };
             #endregion
 
             #region Species
@@ -140,6 +154,7 @@ namespace HousePlants.Data
             var pachiraAquaticaSpecies = new Species("Pachira Aquatica", pachiraGenus);
             var syngoniumPodophyllumSpecies = new Species("Syngonium podophyllum", syngoniumGenus);
             var dionaeaMuscipula = new Species("Dionaea Muscipula", dionaeaGenus);
+            var nepetaNervosaSpecies = new Species("Nepeta Nervosa 'Blue Carpet'", nepetaGenus);
             #endregion
             #endregion
 
@@ -443,6 +458,17 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("05.02.2021", format),
             };
             context.Add(plant);
+            #endregion
+
+            #region Balcony
+            plant = new Plant
+            {
+                CommonName = "Kattemynte, Blue Carpet",
+                AquiredDate = DateTime.Parse("02.06.2021", format),
+                Species = nepetaNervosaSpecies
+            };
+            context.Add(plant);
+
             #endregion
 
             #endregion

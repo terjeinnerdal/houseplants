@@ -10,16 +10,19 @@ using NodaTime;
 #nullable enable
 namespace HousePlants.Domain
 {
-   [Owned]
+    [Owned]
     public class PlantPassport
     {
-        public bool Perennial { get; set; }
+        public bool? Perennial { get; set; }
         public LightRequirement LightRequirement { get; set; }
         public WaterRequirement WaterRequirement { get; set; }
         public NutrientRequirement NutrientRequirement { get; set; }
         public SoilRequirement SoilRequirement { get; set; }
         public WateringTechnique WateringTechnique { get; set; }
-        public int MinimumTemperature { get; set; }
+        public int? MinimumTemperature { get; set; }
+        public bool? Edible { get; set; }
+        public FloweringPeriod? FloweringPeriod { get; set; }
+        public int? Height { get; set; }
 
         public static PlantPassport StandardPassport => new PlantPassport
         {
@@ -40,6 +43,7 @@ namespace HousePlants.Domain
             WateringTechnique = WateringTechnique.WetBoneDry,
             MinimumTemperature = 10
         };
+
     }
 
     public enum NutrientRequirement
