@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace HousePlants.Models
+namespace HousePlants.Models.Plant
 {    public enum Month 
     { 
         NotSet = 0, 
@@ -27,12 +27,16 @@ namespace HousePlants.Models
  
         public FloweringPeriod(Month start, Month end) 
         { 
-            if (start == Month.NotSet) 
-                throw new ArgumentException("FloweringPeriod must have a start date", nameof(start)); 
- 
-            if (end == Month.NotSet) 
-                throw new ArgumentException("FloweringPeriod must have an end date", nameof(end)); 
- 
+            if (start == Month.NotSet)
+            {
+                throw new ArgumentException("FloweringPeriod must have a start date", nameof(start));
+            }
+
+            if (end == Month.NotSet)
+            {
+                throw new ArgumentException("FloweringPeriod must have an end date", nameof(end));
+            }
+
             Start = start; 
             End = end; 
         } 

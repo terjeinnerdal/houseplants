@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HousePlants.Models;
+using HousePlants.Models.Plant;
 using HousePlants.Pages.Plants;
 
 namespace HousePlants.Infrastructure.MapperProfiles

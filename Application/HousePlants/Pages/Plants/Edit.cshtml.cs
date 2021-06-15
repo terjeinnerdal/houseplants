@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HousePlants.Data;
 using HousePlants.Models;
-using HousePlants.Models.Requirements;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using HousePlants.Models.Plant;
+using HousePlants.Models.Plant.Requirements;
 
 namespace HousePlants.Pages.Plants
 {
     public class EditModel : PageModel
     {
         private readonly HousePlantsContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EditModel(HousePlantsContext context)
+        public EditModel(HousePlantsContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
+        [BindProperty]
+        public IFormFile UploadedFile { get; set; }
 
         [BindProperty]
         public Plant Plant { get; set; }
@@ -52,6 +58,9 @@ namespace HousePlants.Pages.Plants
             }
 
             _context.Attach(Plant).State = EntityState.Modified;
+            var file = Path.Combine(_webHostEnvironment.ContentRootPath, "uploads", UploadedFile.FileName);
+            await using var fileStream = new FileStream(file, FileMode.Create);
+            await UploadedFile.CopyToAsync(fileStream);
 
             try
             {

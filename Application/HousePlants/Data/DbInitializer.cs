@@ -2,8 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using HousePlants.Models;
-using HousePlants.Models.Requirements;
-using HousePlants.Models.Taxonomy;
+using HousePlants.Models.Plant;
+using HousePlants.Models.Plant.Requirements;
+using HousePlants.Models.Plant.Taxonomy;
 using Microsoft.EntityFrameworkCore;
 
 namespace HousePlants.Data
@@ -17,10 +18,17 @@ namespace HousePlants.Data
                 throw new ArgumentNullException(nameof(context));
             }
 
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            try
+            {
+                context.Database.EnsureDeleted();
 
-            context.Database.Migrate();
+                context.Database.EnsureCreated();
+                context.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             if (context.Plants.Any())
             {
@@ -450,14 +458,20 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2012", format),
             };
             context.Add(plant);
-            plant = new Plant
-            {
-                CommonName = "Blåstjerne",
-                Description = "Kjøpt på Meny sammen med spider plant. " +
-                              "Tålte kulden hjem fra Meny bra også. Virker meget hardfør!",
-                AquiredDate = DateTime.Parse("05.02.2021", format),
-            };
-            context.Add(plant);
+            //plant = new Plant
+            //{
+            //    CommonName = "Blåstjerne",
+            //    Description = "Kjøpt på Meny.",
+            //    AquiredDate = DateTime.Parse("05.02.2021", format),
+            //    Species = new Species("Phlebodium aureum", new Genus("Phlebodium", new Family("Polypodiaceae")), new PlantPassport
+            //    {
+            //        NutrientRequirement = NutrientRequirement.Low,
+            //        WaterRequirement = WaterRequirement.Medium,
+            //        WateringTechnique = WateringTechnique.WetDry
+            //    })
+            //};
+
+            //context.Add(plant);
             #endregion
 
             #region Balcony
@@ -468,6 +482,17 @@ namespace HousePlants.Data
                 Species = nepetaNervosaSpecies
             };
             context.Add(plant);
+
+            plant = new Plant
+            {
+                CommonName = "Høstfloks",
+                AquiredDate = DateTime.Parse("02.06.2021", format),
+                Species = new Species("Phlox Sweet Summer Candy")
+            };
+            context.Add(plant);
+
+
+
 
             #endregion
 

@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Drawing.Printing;
+using System.Linq;
 using HousePlants.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,19 +16,93 @@ namespace HousePlants
 {
     public class Program
     {
+        private static readonly string SQL_HOST_FORMAT = "{{ENV_SQL_HOST}}";
+        private static readonly string SQL_USERNAME_FORMAT = "{{ENV_SQL_USERNAME}}";
+        private static readonly string SQL_PASSWORD_FORMAT = "{{ENV_SQL_PASSWORD}}";
+
+        private static readonly List<string>  RequiredEnvVars = new []
+        {
+            "ENV_SQL_HOST",
+            "ENV_SQL_USERNAME",
+            "ENV_SQL_PASSWORD",
+            "ConnectionStrings:PostgresConnection",
+            "ASPNETCORE_ENVIRONMENT",
+            "ASPNETCORE_ULRS",
+            "ASPNETCORE_LOGGING_CONSOLE_DISABLECOLORS",
+            "DOTNET_VERSION",
+            "DOTNET_RUNNING_IN_CONTAINER",
+            "ENVIRONMENT",
+            "ASPNETCORE_VERSION"
+        }.ToList();
+        
+        //private static void CheckConfig(IConfiguration config)
+        //{
+        //    foreach (string requiredEnvVar in RequiredEnvVars)
+        //    {
+        //        CheckSetting(config, requiredEnvVar);
+        //    }
+        //}
+
+        //private static void CheckSetting(IConfiguration config, string key)
+        //{
+        //    if (string.IsNullOrEmpty(config[key]))
+        //    {
+        //        //                throw new ConfigurationException($"{key} must be specified");
+        //    }
+        //}
+
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            PrintEnv();
-            CreateDbIfNotExists(host);
-            host.Run();
+            using IServiceScope scope = host.Services.CreateScope();
+            IServiceProvider services = scope.ServiceProvider;
+            var config = services.GetRequiredService<IConfiguration>();
 
+            PrintEnv();
             void PrintEnv()
+            {
+                Console.WriteLine($"Printing RequiredEnvVars");
+                var sortedEnvVars = config.AsEnumerable()
+                    .Where(envVarKvp => RequiredEnvVars.Any(required => Equals($"\"{required}\"", $"\"{envVarKvp.Key}\"")))
+                    .ToImmutableDictionary();
+                foreach (var keyValuePair in sortedEnvVars)
+                {
+                    if (RequiredEnvVars.Any(s=> keyValuePair.Key.Contains(s)))
+                    {
+                        Console.WriteLine($"{keyValuePair.Key}: {keyValuePair.Value}");
+                    }
+                }
+            }
+
+            //CheckConfig();
+            //void CheckConfig()
+            //{
+            //    foreach (string requiredEnvVar in RequiredEnvVars)
+            //    {
+            //        CheckSetting(config, requiredEnvVar);
+            //    }
+            //}
+
+            CreateDbIfNotExists(host);
+            void CreateDbIfNotExists(IHost host)
             {
                 using IServiceScope scope = host.Services.CreateScope();
                 IServiceProvider services = scope.ServiceProvider;
-                var config = services.GetRequiredService<IConfiguration>();
+
+                try
+                {
+                    var context = services.GetRequiredService<HousePlantsContext>();
+                    DbInitializer.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred creating the DB");
+                    throw;
+                }
             }
+
+            host.Run();
         }
 
         /// <summary>
@@ -38,35 +117,41 @@ namespace HousePlants
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                        .ConfigureAppConfiguration(config =>
-                            config.AddJsonFile("appsettings.logs.json", optional: true))
-                        .UseSerilog((hostingContext, loggerConfiguration) =>
+                        .ConfigureServices((context, services) =>
                         {
-                            loggerConfiguration
-                                .ReadFrom.Configuration(hostingContext.Configuration)
-                                .Enrich.FromLogContext()
-                                .Enrich.WithProperty("ApplicationName", typeof(Program).Assembly.GetName().Name)
-                                .Enrich.WithProperty("Environment", hostingContext.HostingEnvironment);
-                        });
+                            ReplaceConnectionStringValues();
+                            void ReplaceConnectionStringValues()
+                            {
+                                string sqlHost = context.Configuration["ENV_SQL_HOST"];
+                                string username = context.Configuration["ENV_SQL_USERNAME"];
+                                string password = context.Configuration["ENV_SQL_PASSWORD"];
+
+                                string defaultConnectionString = context.Configuration.GetConnectionString("PostgresConnection");
+
+                                var defaultConnectionStringBuilder =
+                                    new Npgsql.NpgsqlConnectionStringBuilder(defaultConnectionString);
+
+                                if (defaultConnectionString.Contains(SQL_HOST_FORMAT))
+                                {
+                                    defaultConnectionStringBuilder.Host = sqlHost;
+                                }
+
+                                if (defaultConnectionString.Contains(SQL_USERNAME_FORMAT))
+                                {
+                                    defaultConnectionStringBuilder.Username = username;
+                                }
+
+                                if (defaultConnectionString.Contains(SQL_PASSWORD_FORMAT))
+                                {
+                                    defaultConnectionStringBuilder.Password = password;
+                                }
+
+                                context.Configuration["ConnectionStrings:PostgresConnection"] =
+                                    defaultConnectionStringBuilder.ConnectionString;
+                            }
+                        })
+                        .UseSerilog((hostingContext, loggerConfiguration) =>
+                            loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
                 });
-
-
-        private static void CreateDbIfNotExists(IHost host)
-        {
-            using IServiceScope scope = host.Services.CreateScope();
-            IServiceProvider services = scope.ServiceProvider;
-
-            try
-            {
-                var context = services.GetRequiredService<HousePlantsContext>();
-                DbInitializer.Initialize(context);
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred creating the DB");
-                throw;
-            }
-        }
     }
 }

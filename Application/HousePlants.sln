@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1808FCD7-A59A-461F-8648-909D96BCA52A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\Deploy.ps1 = ..\Deploy.ps1
 		nuget.config = nuget.config
 		Readme.md = Readme.md
 	EndProjectSection
@@ -15,7 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{1921
 		.config\dotnet-tools.json = .config\dotnet-tools.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HousePlants", "HousePlants\HousePlants.csproj", "{F4746A85-4EF2-4924-A1C7-9B2A72B5443A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HousePlants", "HousePlants\HousePlants.csproj", "{F4746A85-4EF2-4924-A1C7-9B2A72B5443A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HousePlants.Tests", "test\HousePlants.Tests\HousePlants.Tests.csproj", "{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +42,18 @@ Global
 		{F4746A85-4EF2-4924-A1C7-9B2A72B5443A}.Release|x64.Build.0 = Release|Any CPU
 		{F4746A85-4EF2-4924-A1C7-9B2A72B5443A}.Release|x86.ActiveCfg = Release|Any CPU
 		{F4746A85-4EF2-4924-A1C7-9B2A72B5443A}.Release|x86.Build.0 = Release|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Debug|x64.Build.0 = Debug|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Debug|x86.Build.0 = Debug|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Release|x64.ActiveCfg = Release|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Release|x64.Build.0 = Release|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Release|x86.ActiveCfg = Release|Any CPU
+		{ABD48D81-4EB2-49B6-8F78-5442AEE2CFCE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

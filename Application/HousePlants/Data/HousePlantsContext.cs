@@ -2,7 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HousePlants.Models;
-using HousePlants.Models.Taxonomy;
+using HousePlants.Models.Plant;
+using HousePlants.Models.Plant.Taxonomy;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
@@ -29,17 +30,16 @@ namespace HousePlants.Data
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var entries = ChangeTracker.Entries().Where(e =>
-                e.Entity is BaseEntity && 
-                (e.State == EntityState.Added ||
-                e.State == EntityState.Modified));
+                e.Entity is GuidAndNodaTimeEntityBase && 
+                (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entityEntry in entries)
             {
-                ((BaseEntity)entityEntry.Entity).Modified = SystemClock.Instance.GetCurrentInstant();
+                ((GuidAndNodaTimeEntityBase)entityEntry.Entity).Modified = SystemClock.Instance.GetCurrentInstant();
 
                 if (entityEntry.State == EntityState.Added)
                 {
-                    ((BaseEntity)entityEntry.Entity).Created = SystemClock.Instance.GetCurrentInstant();
+                    ((GuidAndNodaTimeEntityBase)entityEntry.Entity).Created = SystemClock.Instance.GetCurrentInstant();
                 }
             }
 

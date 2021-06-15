@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HousePlants.Models;
+using HousePlants.Models.Plant;
 
 namespace HousePlants.Pages.Plants
 {
