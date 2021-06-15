@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Drawing.Printing;
 using System.Linq;
 using HousePlants.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -16,47 +15,42 @@ namespace HousePlants
 {
     public class Program
     {
-        private static readonly string SQL_HOST_FORMAT = "{{ENV_SQL_HOST}}";
-        private static readonly string SQL_USERNAME_FORMAT = "{{ENV_SQL_USERNAME}}";
-        private static readonly string SQL_PASSWORD_FORMAT = "{{ENV_SQL_PASSWORD}}";
+        private const string SqlHostFormat = "{{ENV_SQL_HOST}}";
+        private const string SqlUsernameFormat = "{{ENV_SQL_USERNAME}}";
+        private const string SqlPasswordFormat = "{{ENV_SQL_PASSWORD}}";
 
         private static readonly List<string>  RequiredEnvVars = new []
         {
+            "ASPNETCORE_ENVIRONMENT",
+            "ConnectionStrings:PostgresConnection",
             "ENV_SQL_HOST",
             "ENV_SQL_USERNAME",
-            "ENV_SQL_PASSWORD",
-            "ConnectionStrings:PostgresConnection",
-            "ASPNETCORE_ENVIRONMENT",
-            "ASPNETCORE_ULRS",
-            "ASPNETCORE_LOGGING_CONSOLE_DISABLECOLORS",
-            "DOTNET_VERSION",
-            "DOTNET_RUNNING_IN_CONTAINER",
-            "ENVIRONMENT",
-            "ASPNETCORE_VERSION"
+            "ENV_SQL_PASSWORD"
         }.ToList();
-        
-        //private static void CheckConfig(IConfiguration config)
-        //{
-        //    foreach (string requiredEnvVar in RequiredEnvVars)
-        //    {
-        //        CheckSetting(config, requiredEnvVar);
-        //    }
-        //}
-
-        //private static void CheckSetting(IConfiguration config, string key)
-        //{
-        //    if (string.IsNullOrEmpty(config[key]))
-        //    {
-        //        //                throw new ConfigurationException($"{key} must be specified");
-        //    }
-        //}
 
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+
             using IServiceScope scope = host.Services.CreateScope();
             IServiceProvider services = scope.ServiceProvider;
             var config = services.GetRequiredService<IConfiguration>();
+
+            VeryfiConfig();
+            void VeryfiConfig()
+            {
+                foreach (string requiredEnvVar in RequiredEnvVars)
+                {
+                    VerifySettingExists(requiredEnvVar);
+                }
+            }
+            void VerifySettingExists(string key)
+            {
+                if (string.IsNullOrEmpty(config[key]))
+                {
+                    throw new ConfigurationException($"{key} must be specified");
+                }
+            }
 
             PrintEnv();
             void PrintEnv()
@@ -74,25 +68,16 @@ namespace HousePlants
                 }
             }
 
-            //CheckConfig();
-            //void CheckConfig()
-            //{
-            //    foreach (string requiredEnvVar in RequiredEnvVars)
-            //    {
-            //        CheckSetting(config, requiredEnvVar);
-            //    }
-            //}
-
-            CreateDbIfNotExists(host);
-            void CreateDbIfNotExists(IHost host)
+            CreateDbIfNotExists();
+            void CreateDbIfNotExists()
             {
-                using IServiceScope scope = host.Services.CreateScope();
-                IServiceProvider services = scope.ServiceProvider;
-
                 try
                 {
                     var context = services.GetRequiredService<HousePlantsContext>();
-                    DbInitializer.Initialize(context);
+                    if(!context.Plants.Any())
+                    {
+                        DbInitializer.Initialize(context);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -117,6 +102,11 @@ namespace HousePlants
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
+                        .ConfigureAppConfiguration(confBuilder =>
+                        {
+                            confBuilder.AddEnvironmentVariables();
+                            confBuilder.AddJsonFile("appsettings.Logging.json");
+                        })
                         .ConfigureServices((context, services) =>
                         {
                             ReplaceConnectionStringValues();
@@ -131,17 +121,18 @@ namespace HousePlants
                                 var defaultConnectionStringBuilder =
                                     new Npgsql.NpgsqlConnectionStringBuilder(defaultConnectionString);
 
-                                if (defaultConnectionString.Contains(SQL_HOST_FORMAT))
+
+                                if (defaultConnectionString.Contains(SqlHostFormat))
                                 {
                                     defaultConnectionStringBuilder.Host = sqlHost;
                                 }
 
-                                if (defaultConnectionString.Contains(SQL_USERNAME_FORMAT))
+                                if (defaultConnectionString.Contains(SqlUsernameFormat))
                                 {
                                     defaultConnectionStringBuilder.Username = username;
                                 }
 
-                                if (defaultConnectionString.Contains(SQL_PASSWORD_FORMAT))
+                                if (defaultConnectionString.Contains(SqlPasswordFormat))
                                 {
                                     defaultConnectionStringBuilder.Password = password;
                                 }
