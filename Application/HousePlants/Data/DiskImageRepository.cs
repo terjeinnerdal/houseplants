@@ -1,10 +1,11 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using HousePlants.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-namespace HousePlants.Pages.Plants
+namespace HousePlants.Data
 {
     public class DiskImageRepository : IImageRepository
     {
@@ -18,7 +19,7 @@ namespace HousePlants.Pages.Plants
         public async Task<Guid> SaveImageAsync(IFormFile formFile)
         {
             var id = Guid.NewGuid();
-            string extension = ImageValidator.GetFileExtension(formFile.FileName);
+            string extension = Path.GetExtension(formFile.FileName);
             string fileAsBase64String = ConvertIFormFileToBase64String(formFile);
             string fileName = Path.Combine(_webHostEnvironment.ContentRootPath, $"{id}.{extension}");
             await File.WriteAllTextAsync(fileName, fileAsBase64String);

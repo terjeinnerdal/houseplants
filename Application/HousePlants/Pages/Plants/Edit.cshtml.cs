@@ -17,12 +17,12 @@ namespace HousePlants.Pages.Plants
 {
     public class EditModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EditModel(HousePlantsContext context, IWebHostEnvironment webHostEnvironment)
+        public EditModel(HousePlantsDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
-            _context = context;
+            _dbContext = dbContext;
             _webHostEnvironment = webHostEnvironment;
         }
         [BindProperty]
@@ -38,7 +38,7 @@ namespace HousePlants.Pages.Plants
                 return NotFound();
             }
 
-            Plant = await _context.Plants.FirstOrDefaultAsync(m => m.Id == id);
+            Plant = await _dbContext.Plants.FirstOrDefaultAsync(m => m.Id == id);
             
             if (Plant == null)
             {
@@ -57,14 +57,14 @@ namespace HousePlants.Pages.Plants
                 return Page();
             }
 
-            _context.Attach(Plant).State = EntityState.Modified;
+            _dbContext.Attach(Plant).State = EntityState.Modified;
             var file = Path.Combine(_webHostEnvironment.ContentRootPath, "uploads", UploadedFile.FileName);
             await using var fileStream = new FileStream(file, FileMode.Create);
             await UploadedFile.CopyToAsync(fileStream);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,7 +81,7 @@ namespace HousePlants.Pages.Plants
 
         private bool PlantExists(Guid id)
         {
-            return _context.Plants.Any(e => e.Id == id);
+            return _dbContext.Plants.Any(e => e.Id == id);
         }
 
         public LightRequirement[] GetSelectedLightRequirements(LightRequirement lightRequirement)

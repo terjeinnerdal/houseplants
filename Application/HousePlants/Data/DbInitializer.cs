@@ -11,31 +11,30 @@ namespace HousePlants.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(HousePlantsContext context)
+        public static void Initialize(HousePlantsDbContext dbContext)
         {
-            if (context == null)
+            if (dbContext == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(dbContext));
             }
 
             try
             {
-                context.Database.EnsureDeleted();
-
-                context.Database.EnsureCreated();
-                context.Database.Migrate();
+                dbContext.Database.EnsureDeleted();
+                dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            if (context.Plants.Any())
+            if (dbContext.Plants.Any())
             {
                 return;
             }
 
-            Plant plant = context.Plants.FirstOrDefault(s => s.CommonName.Equals("Ficus Lyrata Bambino"));
+            Plant plant = dbContext.Plants.FirstOrDefault(s => s.CommonName.Equals("Ficus Lyrata Bambino"));
             if (plant != null)
             {
                 return;
@@ -167,10 +166,10 @@ namespace HousePlants.Data
             #endregion
 
             // When viewing them I'd liker to order by
-            // - Minimum temperature
-            // - Watering requirements
-            // - Light requirements
-            // - Genus
+            // - Minimum temperature (PP)
+            // - Watering requirements (PP)
+            // - Light requirements (PP)
+            // - Genus (Taxonomy)
             // - Where I got it
             // - When I got it
 
@@ -178,6 +177,10 @@ namespace HousePlants.Data
             var format = new DateTimeFormatInfo { ShortDatePattern = "d.M.yyyy" };
 
             #region Figs
+
+            plant = CreatePlant("Fiolinfiken", DateTime.Parse("20.09.2020", format));
+
+
             plant = new Plant
             {
                 CommonName = "Fiolinfiken",
@@ -185,35 +188,35 @@ namespace HousePlants.Data
                 MinimumTemperature = 12,
                 Species = lyrataSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Ficus Lyrata Bambino",
                 AquiredDate = DateTime.Parse("22.11.2020", format),
                 Species = lyrataBambinoSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Lærbladfiken",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 Species = cyathistipulaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Gummi fiken",
                 AquiredDate = DateTime.Parse("26.01.2021", format),
                 Species = elasticaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 Description = "Bought at IKEA. Beatiful plant! Really thrives.",
                 AquiredDate = DateTime.Parse("01.02.2021", format),
                 Species = benjaminaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             #endregion
 
             #region Succulents
@@ -245,7 +248,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 Species = pilosocereusPachycladusSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Tønnekaktus",
@@ -253,7 +256,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2012", format),
                 Species = echinocactusGrusoniiSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             #endregion
 
             #region Pileas
@@ -264,7 +267,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 Species = pileaPeperomiaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Rain drop",
@@ -272,7 +275,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 Species = pileaPeperomiaPolybotria
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Melonskall",
@@ -280,7 +283,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 Species = pileaPeperomiaArgytreia
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             #endregion
 
             #region Monstera
@@ -291,7 +294,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 Species = monsteraDeliciosaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Monstera Cuttings Plastic Bag",
@@ -299,7 +302,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("11.01.2021", format),
                 Species = monsteraDeliciosaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Monstera Cutting Self Watering",
@@ -307,7 +310,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("11.01.2021", format),
                 Species = monsteraDeliciosaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             #endregion
 
             #region Other
@@ -318,7 +321,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 Species = chamaedoreaElegansSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
 
             plant = new Plant
             {
@@ -328,7 +331,7 @@ namespace HousePlants.Data
                 Species = spathiphyllumSpecies
 
             };
-            context.Add(plant);
+            dbContext.Add(plant);
 
             plant = new Plant
             {
@@ -338,7 +341,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("06.01.2021", format),
                 Species = epipremnumAureumSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
 
             plant = new Plant
             {
@@ -347,7 +350,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("06.01.2021", format),
                 Species = fittoniaAlbivensisSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
 
             plant = new Plant
             {
@@ -365,7 +368,7 @@ namespace HousePlants.Data
                 MinimumTemperature = 15,
                 Species = alocasioAmazonicaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Svigermors tunge",
@@ -373,7 +376,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 Species = sansevieriaLaurentilSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Svigermors tunge",
@@ -381,7 +384,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 Species = sansevieriaTrifiasciataSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Venusfluefanger",
@@ -389,7 +392,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 Species = dionaeaMuscipula
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Paraplytre",
@@ -397,7 +400,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 Species = pachiraAquaticaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Marmorlanterne",
@@ -405,7 +408,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 Species = ceropegiaWoodiiSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Dragetre",
@@ -414,7 +417,7 @@ namespace HousePlants.Data
                 MinimumTemperature = 12,
                 Species = dracaneaFragransSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Kaffeplante",
@@ -422,7 +425,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 Species = coffeaArabicaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Spider plant, Grønnrenner",
@@ -431,7 +434,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 Species = chlorophytumComosumSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             plant = new Plant
             {
                 CommonName = "Arrow head",
@@ -442,7 +445,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("05.02.2021", format),
                 Species = syngoniumPodophyllumSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             #endregion
 
             #region Unidentified
@@ -457,7 +460,7 @@ namespace HousePlants.Data
                               "Har generelt fått lite oppmerksomhet, lys eller annen omsorg, men står lyst nå etter ompotting.",
                 AquiredDate = DateTime.Parse("26.03.2012", format),
             };
-            context.Add(plant);
+            dbContext.Add(plant);
             //plant = new Plant
             //{
             //    CommonName = "Blåstjerne",
@@ -481,7 +484,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("02.06.2021", format),
                 Species = nepetaNervosaSpecies
             };
-            context.Add(plant);
+            dbContext.Add(plant);
 
             plant = new Plant
             {
@@ -489,7 +492,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("02.06.2021", format),
                 Species = new Species("Phlox Sweet Summer Candy")
             };
-            context.Add(plant);
+            dbContext.Add(plant);
 
 
 
@@ -498,7 +501,17 @@ namespace HousePlants.Data
 
             #endregion
 
-            context.SaveChanges();
+            dbContext.SaveChanges();
+
+            void AddPlant(string commonName, string variety, string species, DateTime? aquiredDate = null, Genus genus = null)
+            {
+
+            }
+        }
+
+        private static Plant CreatePlant(string name, DateTime aquiredDate)
+        {
+            return new Plant{ CommonName = name, AquiredDate = aquiredDate};
         }
     }
 }

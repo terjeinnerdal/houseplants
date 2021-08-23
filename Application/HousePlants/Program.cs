@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using HousePlants.Data;
+using HousePlants.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,9 +15,9 @@ namespace HousePlants
 {
     public class Program
     {
-        private const string SqlHostFormat = "{{ENV_SQL_HOST}}";
-        private const string SqlUsernameFormat = "{{ENV_SQL_USERNAME}}";
-        private const string SqlPasswordFormat = "{{ENV_SQL_PASSWORD}}";
+        private const string SqlHostPlaceHolderFormat = "{{ENV_SQL_HOST}}";
+        private const string SqlUsernamePlaceHolderFormat = "{{ENV_SQL_USERNAME}}";
+        private const string SqlPasswordPlaceHolderFormat = "{{ENV_SQL_PASSWORD}}";
 
         private static readonly List<string>  RequiredEnvVars = new []
         {
@@ -44,6 +44,7 @@ namespace HousePlants
                     VerifySettingExists(requiredEnvVar);
                 }
             }
+
             void VerifySettingExists(string key)
             {
                 if (string.IsNullOrEmpty(config[key]))
@@ -73,7 +74,7 @@ namespace HousePlants
             {
                 try
                 {
-                    var context = services.GetRequiredService<HousePlantsContext>();
+                    var context = services.GetRequiredService<HousePlantsDbContext>();
                     if(!context.Plants.Any())
                     {
                         DbInitializer.Initialize(context);
@@ -90,13 +91,6 @@ namespace HousePlants
             host.Run();
         }
 
-        /// <summary>
-        /// The code that calls CreateDefaultBuilder is in a method named CreateWebHostBuilder,
-        /// which separates it from the code in Main that calls Run on the builder object. This
-        /// separation is required if you use Entity Framework Core tools. The tools expect to
-        /// find a CreateWebHostBuilder method that they can call at design time to configure the
-        /// host without running the app. An alternative is to implement IDesignTimeDbContextFactory.
-        /// </summary>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
@@ -122,17 +116,17 @@ namespace HousePlants
                                     new Npgsql.NpgsqlConnectionStringBuilder(defaultConnectionString);
 
 
-                                if (defaultConnectionString.Contains(SqlHostFormat))
+                                if (defaultConnectionString.Contains(SqlHostPlaceHolderFormat))
                                 {
                                     defaultConnectionStringBuilder.Host = sqlHost;
                                 }
 
-                                if (defaultConnectionString.Contains(SqlUsernameFormat))
+                                if (defaultConnectionString.Contains(SqlUsernamePlaceHolderFormat))
                                 {
                                     defaultConnectionStringBuilder.Username = username;
                                 }
 
-                                if (defaultConnectionString.Contains(SqlPasswordFormat))
+                                if (defaultConnectionString.Contains(SqlPasswordPlaceHolderFormat))
                                 {
                                     defaultConnectionStringBuilder.Password = password;
                                 }
@@ -145,4 +139,9 @@ namespace HousePlants
                             loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
                 });
     }
+    public class ConfigurationException : Exception
+    {
+        public ConfigurationException(string message) : base(message) { }
+    }
+
 }

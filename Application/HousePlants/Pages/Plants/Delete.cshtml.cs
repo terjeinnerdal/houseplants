@@ -11,11 +11,11 @@ namespace HousePlants.Pages.Plants
 {
     public class DeleteModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
 
-        public DeleteModel(HousePlantsContext context)
+        public DeleteModel(HousePlantsDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
@@ -28,7 +28,7 @@ namespace HousePlants.Pages.Plants
                 return NotFound();
             }
 
-            Plant = await _context.Plants.FirstOrDefaultAsync(m => m.Id == id);
+            Plant = await _dbContext.Plants.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Plant == null)
             {
@@ -44,12 +44,12 @@ namespace HousePlants.Pages.Plants
                 return NotFound();
             }
 
-            Plant = await _context.Plants.FindAsync(id);
+            Plant = await _dbContext.Plants.FindAsync(id);
 
             if (Plant != null)
             {
-                _context.Plants.Remove(Plant);
-                await _context.SaveChangesAsync();
+                _dbContext.Plants.Remove(Plant);
+                await _dbContext.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

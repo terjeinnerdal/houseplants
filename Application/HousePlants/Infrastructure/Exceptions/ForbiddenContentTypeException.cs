@@ -1,6 +1,6 @@
 using System;
 
-namespace HousePlants.Exceptions
+namespace HousePlants.Infrastructure.Exceptions
 {
     public class ForbiddenContentTypeException : Exception
     {

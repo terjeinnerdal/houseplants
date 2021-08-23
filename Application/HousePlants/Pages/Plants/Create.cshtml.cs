@@ -50,13 +50,13 @@ namespace HousePlants.Pages.Plants
     public class CreateModel : PageModel
     {
         private readonly ILogger<CreateModel> _logger;
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public CreateModel(ILogger<CreateModel> logger, HousePlantsContext context, IMapper mapper)
+        public CreateModel(ILogger<CreateModel> logger, HousePlantsDbContext dbContext, IMapper mapper)
         {
             _logger = logger;
-            _context = context;
+            _dbContext = dbContext;
             _mapper = mapper;
         }
 
@@ -80,8 +80,8 @@ namespace HousePlants.Pages.Plants
             }
 
             var plant = _mapper.Map<Plant>(CreatePlantVmModel);
-            await _context.Plants.AddAsync(plant);
-            await _context.SaveChangesAsync();
+            await _dbContext.Plants.AddAsync(plant);
+            await _dbContext.SaveChangesAsync();
 
             var createdEvent = new
             {

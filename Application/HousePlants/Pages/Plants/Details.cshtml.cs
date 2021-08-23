@@ -13,11 +13,11 @@ namespace HousePlants.Pages.Plants
 {
     public class DetailsModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
 
-        public DetailsModel(HousePlantsContext context)
+        public DetailsModel(HousePlantsDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public Plant Plant { get; set; }
@@ -29,7 +29,7 @@ namespace HousePlants.Pages.Plants
                 return NotFound();
             }
 
-            Plant = await _context.Plants.FirstOrDefaultAsync(m => m.Id == id);
+            Plant = await _dbContext.Plants.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Plant == null)
             {

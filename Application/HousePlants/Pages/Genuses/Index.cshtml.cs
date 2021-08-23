@@ -12,18 +12,18 @@ namespace HousePlants.Pages.Genuses
 {
     public class IndexModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
 
-        public IndexModel(HousePlantsContext context)
+        public IndexModel(HousePlantsDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IList<Family> Family { get;set; }
 
         public async Task OnGetAsync()
         {
-            Family = await _context.Families.ToListAsync();
+            Family = await _dbContext.Families.ToListAsync();
         }
     }
 }

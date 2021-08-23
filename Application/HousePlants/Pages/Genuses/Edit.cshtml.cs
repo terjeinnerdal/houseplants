@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HousePlants.Data;
 using HousePlants.Models.Plant.Taxonomy;
@@ -13,11 +11,11 @@ namespace HousePlants.Pages.Genuses
 {
     public class EditModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
 
-        public EditModel(HousePlantsContext context)
+        public EditModel(HousePlantsDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
@@ -30,7 +28,7 @@ namespace HousePlants.Pages.Genuses
                 return NotFound();
             }
 
-            Family = await _context.Families.FirstOrDefaultAsync(m => m.Id == id);
+            Family = await _dbContext.Families.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Family == null)
             {
@@ -48,11 +46,11 @@ namespace HousePlants.Pages.Genuses
                 return Page();
             }
 
-            _context.Attach(Family).State = EntityState.Modified;
+            _dbContext.Attach(Family).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,7 +69,7 @@ namespace HousePlants.Pages.Genuses
 
         private bool FamilyExists(Guid id)
         {
-            return _context.Families.Any(e => e.Id == id);
+            return _dbContext.Families.Any(e => e.Id == id);
         }
     }
 }

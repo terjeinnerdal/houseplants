@@ -33,9 +33,9 @@ namespace HousePlants
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var loggerFactory = new SerilogLoggerFactory();
+            //var loggerFactory = new SerilogLoggerFactory();
 
-            services.AddDbContext<HousePlantsContext>(options =>
+            services.AddDbContext<HousePlantsDbContext>(options =>
                     options.UseNpgsql(
                         Configuration.GetConnectionString("PostgresConnection"), builder => builder.UseNodaTime()));
 
@@ -47,7 +47,7 @@ namespace HousePlants
             services.AddHealthChecks();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<HousePlantsContext>();
+                .AddEntityFrameworkStores<HousePlantsDbContext>();
 
             services.AddAutoMapper(typeof(Startup));
         }

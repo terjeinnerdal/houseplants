@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace HousePlants.Data
+namespace HousePlants.Infrastructure.Exceptions
 {
     [Serializable]
     public class SeedDbException : Exception

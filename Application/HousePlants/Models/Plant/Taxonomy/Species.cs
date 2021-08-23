@@ -22,4 +22,22 @@ namespace HousePlants.Models.Plant.Taxonomy
             PlantPassport = plantPassport;
         }
     }
+
+    public class Variety : TaxonomyBase
+    {
+        public Species Species { get; set; } = default!;
+        public PlantPassport PlantPassport { get; set; } = PlantPassport.StandardPassport;
+        public Variety(string name) : base(name)
+        {
+        }
+        public Variety(string name, Species species) : base(name)
+        {
+            Species = species;
+        }
+        public Variety(string name, Species species, PlantPassport plantPassport) : base(name)
+        {
+            Species = species;
+            PlantPassport = plantPassport;
+        }
+    }
 }

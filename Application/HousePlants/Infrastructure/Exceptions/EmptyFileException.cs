@@ -1,6 +1,6 @@
 using System;
 
-namespace HousePlants.Pages.Plants
+namespace HousePlants.Infrastructure.Exceptions
 {
     public class EmptyFileException : Exception
     {

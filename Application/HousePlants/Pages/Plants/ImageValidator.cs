@@ -1,6 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
-using HousePlants.Exceptions;
+using HousePlants.Infrastructure.Exceptions;
 
 namespace HousePlants.Pages.Plants
 {
@@ -10,7 +11,7 @@ namespace HousePlants.Pages.Plants
 
         public static void ValidateContentType(string contentType)
         {
-            if (contentType != "image/png" || contentType != "image/jpg")
+            if (contentType != "image/png" && contentType != "image/jpg" && contentType != "image/jpeg")
             {
                 throw new ForbiddenContentTypeException(contentType);
             }
@@ -19,7 +20,7 @@ namespace HousePlants.Pages.Plants
 
         public static void ValidateExtensionAsJpegOrPng(string fileName)
         {
-            var extension = GetFileExtension(fileName);
+            var extension = Path.GetExtension(fileName).Trim('.');
 
             if (string.IsNullOrEmpty(extension))
             {
@@ -30,22 +31,6 @@ namespace HousePlants.Pages.Plants
             {
                 throw new ForbiddenFileExtensionException(fileName);
             }
-        }
-        
-        public static string GetFileExtension(string fileName)
-        {
-            if (fileName == null || string.IsNullOrEmpty(fileName))
-            {
-                throw new ArgumentException($"Specify {nameof(fileName)}", nameof(fileName));
-            }
-
-            string extension = string.Empty;
-            if (fileName.Contains('.'))
-            {
-                extension = fileName.Substring(fileName.LastIndexOf('.'));
-            }
-
-            return extension;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HousePlants
+namespace HousePlants.Infrastructure.Exceptions
 {
     public class ConfigurationException : Exception
     {

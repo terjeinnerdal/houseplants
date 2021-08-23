@@ -12,11 +12,11 @@ namespace HousePlants.Pages.Genuses
 {
     public class DeleteModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
 
-        public DeleteModel(HousePlantsContext context)
+        public DeleteModel(HousePlantsDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
@@ -29,7 +29,7 @@ namespace HousePlants.Pages.Genuses
                 return NotFound();
             }
 
-            Family = await _context.Families.FirstOrDefaultAsync(m => m.Id == id);
+            Family = await _dbContext.Families.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Family == null)
             {
@@ -45,12 +45,12 @@ namespace HousePlants.Pages.Genuses
                 return NotFound();
             }
 
-            Family = await _context.Families.FindAsync(id);
+            Family = await _dbContext.Families.FindAsync(id);
 
             if (Family != null)
             {
-                _context.Families.Remove(Family);
-                await _context.SaveChangesAsync();
+                _dbContext.Families.Remove(Family);
+                await _dbContext.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

@@ -12,11 +12,11 @@ namespace HousePlants.Pages.Genuses
 {
     public class CreateModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
 
-        public CreateModel(HousePlantsContext context)
+        public CreateModel(HousePlantsDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IActionResult OnGet()
@@ -35,8 +35,8 @@ namespace HousePlants.Pages.Genuses
                 return Page();
             }
 
-            _context.Families.Add(Family);
-            await _context.SaveChangesAsync();
+            _dbContext.Families.Add(Family);
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

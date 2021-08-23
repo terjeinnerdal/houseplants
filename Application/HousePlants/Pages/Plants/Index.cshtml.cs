@@ -15,25 +15,25 @@ namespace HousePlants.Pages.Plants
 {
     public class IndexModel : PageModel
     {
-        private readonly HousePlantsContext _context;
+        private readonly HousePlantsDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public IndexModel(HousePlantsContext context, IMapper mapper)
+        public IndexModel(HousePlantsDbContext dbContext, IMapper mapper)
         {
-            _context = context;
+            _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public int NumberOfFamilies => _context.Families.Distinct().Count();
-        public int NumberOfGenuses => _context.Genus.Distinct().Count();
-        public int NumberOfSpecies => _context.Species.Distinct().Count();
+        public int NumberOfFamilies => _dbContext.Families.Distinct().Count();
+        public int NumberOfGenuses => _dbContext.Genus.Distinct().Count();
+        public int NumberOfSpecies => _dbContext.Species.Distinct().Count();
         public int NumberOfPlants => Plants.Count;
 
         public List<PlantIndexVm> Plants { get; set; }
 
         public async Task OnGetAsync()
         {
-            var plants = await _context.Plants.Include(p => p.Species)
+            var plants = await _dbContext.Plants.Include(p => p.Species)
                 .ThenInclude(p => p.Genus)
                 .ThenInclude(p => p.Family)
                 .AsNoTracking()

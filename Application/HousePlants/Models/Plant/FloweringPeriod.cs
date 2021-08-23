@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace HousePlants.Models.Plant
-{    public enum Month 
+{    
+    public enum Month
     { 
         NotSet = 0, 
         January = 1, 
@@ -29,12 +30,12 @@ namespace HousePlants.Models.Plant
         { 
             if (start == Month.NotSet)
             {
-                throw new ArgumentException("FloweringPeriod must have a start date", nameof(start));
+                throw new ArgumentException("FloweringPeriod must have a start month", nameof(start));
             }
 
             if (end == Month.NotSet)
             {
-                throw new ArgumentException("FloweringPeriod must have an end date", nameof(end));
+                throw new ArgumentException("FloweringPeriod must have an end month", nameof(end));
             }
 
             Start = start; 
