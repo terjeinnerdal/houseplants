@@ -36,8 +36,8 @@ namespace HousePlants
             IServiceProvider services = scope.ServiceProvider;
             var config = services.GetRequiredService<IConfiguration>();
 
-            VeryfiConfig();
-            void VeryfiConfig()
+            VerifyConfig();
+            void VerifyConfig()
             {
                 foreach (string requiredEnvVar in RequiredEnvVars)
                 {
