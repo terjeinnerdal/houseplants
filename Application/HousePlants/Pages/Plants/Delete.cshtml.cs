@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using HousePlants.Areas.Identity.Data;
 using HousePlants.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

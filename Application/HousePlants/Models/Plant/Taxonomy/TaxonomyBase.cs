@@ -8,7 +8,7 @@ namespace HousePlants.Models.Plant.Taxonomy
     {
         public Guid Id { get; private set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         protected TaxonomyBase(string name)
         {

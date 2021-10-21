@@ -1,3 +1,0 @@
-﻿# Diagnostics
-
-Register leaf yellowing

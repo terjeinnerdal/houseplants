@@ -1,18 +1,58 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using HousePlants.Areas.Identity.Data;
 using HousePlants.Models;
 using HousePlants.Models.Plant;
 using HousePlants.Models.Plant.Requirements;
 using HousePlants.Models.Plant.Taxonomy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+// When viewing them I'd liker to order by
+// - Minimum temperature (PP)
+// - Watering requirements (PP)
+// - Light requirements (PP)
+// - Genus (Taxonomy)
+// - Where I got it
+// - When I got it
 
 namespace HousePlants.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(HousePlantsDbContext dbContext)
+        private static async Task<string> EnsureUser(IServiceProvider serviceProvider,
+            string testUserPw, string userName)
         {
+            var userManager = serviceProvider.GetService<UserManager<HousePlantsUser>>();
+
+            var user = await userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                user = new HousePlantsUser
+                {
+                    UserName = userName,
+                    Email = userName,
+                    EmailConfirmed = true
+                };
+
+                await userManager.CreateAsync(user, testUserPw);
+            }
+
+            return user.Id;
+        }
+
+
+        public static async Task Initialize(IServiceProvider services)
+        {
+            var config = services.GetRequiredService<IConfiguration>();
+
+
+            
+            await using var dbContext = services.GetRequiredService<HousePlantsDbContext>();
             if (dbContext == null)
             {
                 throw new ArgumentNullException(nameof(dbContext));
@@ -20,13 +60,35 @@ namespace HousePlants.Data
 
             try
             {
-                dbContext.Database.EnsureDeleted();
-                dbContext.Database.EnsureCreated();
-                dbContext.Database.Migrate();
+                await dbContext.Database.EnsureDeletedAsync();
+                await dbContext.Database.EnsureCreatedAsync();
+                await dbContext.Database.MigrateAsync();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+
+            // Get password for database test user.
+            string GetTestUserPw()
+            {
+                string password = config["TestUserPassword"];
+                return string.IsNullOrEmpty(password)
+                    ? throw new ConfigurationException("Please specify the secret TestUserPW")
+                    : password;
+            }
+            string testUserId = Guid.NewGuid().ToString();
+            string adminUserId = Guid.NewGuid().ToString();
+            await AddUsers();
+            async Task AddUsers()
+            {
+                string testUserPw = GetTestUserPw();
+                adminUserId = await EnsureUser(services, testUserPw, "admin@houseplants.net");
+                await EnsureRole(services, adminUserId, "SuperUserRole");
+
+                // allowed user can create and edit contacts that they create
+                testUserId = await EnsureUser(services, testUserPw, "terje.innerdal@gmail.net");
+                await EnsureRole(services, testUserId, "UserRole");
             }
 
             if (dbContext.Plants.Any())
@@ -165,23 +227,14 @@ namespace HousePlants.Data
             #endregion
             #endregion
 
-            // When viewing them I'd liker to order by
-            // - Minimum temperature (PP)
-            // - Watering requirements (PP)
-            // - Light requirements (PP)
-            // - Genus (Taxonomy)
-            // - Where I got it
-            // - When I got it
-
             #region Plants
             var format = new DateTimeFormatInfo { ShortDatePattern = "d.M.yyyy" };
 
             #region Figs
 
-            plant = CreatePlant("Fiolinfiken", DateTime.Parse("20.09.2020", format));
+            plant = CreatePlant("Fiolinfiken", DateTime.Parse("20.09.2020", format), testUserId);
 
-
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Fiolinfiken",
                 AquiredDate = DateTime.Parse("20.09.2020", format),
@@ -189,28 +242,28 @@ namespace HousePlants.Data
                 Species = lyrataSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Ficus Lyrata Bambino",
                 AquiredDate = DateTime.Parse("22.11.2020", format),
                 Species = lyrataBambinoSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Lærbladfiken",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 Species = cyathistipulaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Gummi fiken",
                 AquiredDate = DateTime.Parse("26.01.2021", format),
                 Species = elasticaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 Description = "Bought at IKEA. Beatiful plant! Really thrives.",
                 AquiredDate = DateTime.Parse("01.02.2021", format),
@@ -220,19 +273,19 @@ namespace HousePlants.Data
             #endregion
 
             #region Succulents
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 Description = "Kjøpt på IKEA. Lilla sukkulent.",
                 AquiredDate = DateTime.Parse("26.03.2021", format),
                 Species = echiveriaGibbifloraSpecies
             };
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 Description = "Kjøpt på IKEA. Den lille som jeg trodde var Aloe Vera",
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 Species = gasteriaDuvalSpecies
             };
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 AquiredDate = DateTime.Parse("01.10.2020", format),
                 MinimumTemperature = 10,
@@ -241,7 +294,7 @@ namespace HousePlants.Data
             #endregion
 
             #region Cactus
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Søylekaktus",
                 Description = "Kjøpt på IKEA.",
@@ -249,7 +302,7 @@ namespace HousePlants.Data
                 Species = pilosocereusPachycladusSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Tønnekaktus",
                 Description = "Kjøpt på Coop Øra.",
@@ -260,7 +313,7 @@ namespace HousePlants.Data
             #endregion
 
             #region Pileas
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Kinesisk pengeplante",
                 Description = "Kjøpt på Meny Solsiden. Vokser som en superhelt.",
@@ -268,7 +321,7 @@ namespace HousePlants.Data
                 Species = pileaPeperomiaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Rain drop",
                 Description = "Kjøpt på Plantasjen. Vokser dårligst av de tre Pileaene.",
@@ -276,7 +329,7 @@ namespace HousePlants.Data
                 Species = pileaPeperomiaPolybotria
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Melonskall",
                 Description = "Kjøpt på Plantasjen. Bladene ligner på melonskall.",
@@ -287,7 +340,7 @@ namespace HousePlants.Data
             #endregion
 
             #region Monstera
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Vindusblad (Rema 1000)",
                 Description = "Kjøpt på Rema 1000 Øra. Står i pose med Plantasjen Premium Jord og Perlitt.",
@@ -295,7 +348,7 @@ namespace HousePlants.Data
                 Species = monsteraDeliciosaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Monstera Cuttings Plastic Bag",
                 Description = "4 Stiklinger tatt fra den som ble kjøpt på Plantasjen som hadde fullt av tusenbein i seg og derfor ble kastet.",
@@ -303,7 +356,7 @@ namespace HousePlants.Data
                 Species = monsteraDeliciosaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Monstera Cutting Self Watering",
                 Description = "4 Stiklinger tatt fra den som ble kjøpt på Plantasjen som hadde fullt av tusenbein i seg og derfor ble kastet.",
@@ -314,7 +367,7 @@ namespace HousePlants.Data
             #endregion
 
             #region Other
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Dvergfjærpalme",
                 Description = "Planten er sensitiv for overvanning. Dette kan være grunnen hvis bladene begynner å bli brune.",
@@ -323,7 +376,7 @@ namespace HousePlants.Data
             };
             dbContext.Add(plant);
 
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Fredslilje",
                 Description = "Delt opp i 3 potter.",
@@ -333,7 +386,7 @@ namespace HousePlants.Data
             };
             dbContext.Add(plant);
 
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Gullranke",
                 Description = "Kjøpt på Strå Blomster. " +
@@ -343,7 +396,7 @@ namespace HousePlants.Data
             };
             dbContext.Add(plant);
 
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Nerve plant",
                 Description = "Kjøpt på Strå Blomster",
@@ -352,7 +405,7 @@ namespace HousePlants.Data
             };
             dbContext.Add(plant);
 
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Elefantøre",
                 Description = "Kjøpt på Plantasjen. Den blir mellom 25-40 cm høy og er en svært dekorativ stueplante, men pass på; denne vakringen er nemlig giftig!" +
@@ -369,7 +422,7 @@ namespace HousePlants.Data
                 Species = alocasioAmazonicaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Svigermors tunge",
                 Description = "Kjøpt på IKEA. The one with yellow edges.",
@@ -377,7 +430,7 @@ namespace HousePlants.Data
                 Species = sansevieriaLaurentilSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Svigermors tunge",
                 Description = "Kjøpt på IKEA. Ikke gul/grønn fargekombinasjon slik som den andre.",
@@ -385,7 +438,7 @@ namespace HousePlants.Data
                 Species = sansevieriaTrifiasciataSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Venusfluefanger",
                 Description = "Kjøpt på IKEA.",
@@ -393,7 +446,7 @@ namespace HousePlants.Data
                 Species = dionaeaMuscipula
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Paraplytre",
                 Description = "Kjøpt på IKEA.",
@@ -401,7 +454,7 @@ namespace HousePlants.Data
                 Species = pachiraAquaticaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Marmorlanterne",
                 Description = "Kjøpt på IKEA.",
@@ -409,7 +462,7 @@ namespace HousePlants.Data
                 Species = ceropegiaWoodiiSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Dragetre",
                 Description = "Kjøpt på IKEA. Miniplante, står enda i den orgiginale 9cm potta. Bør sjekke om denne kan ompottes.",
@@ -418,7 +471,7 @@ namespace HousePlants.Data
                 Species = dracaneaFragransSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Kaffeplante",
                 Description = "Kjøpt på IKEA.",
@@ -426,7 +479,7 @@ namespace HousePlants.Data
                 Species = coffeaArabicaSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Spider plant, Grønnrenner",
                 Description = "Kjøpt på Meny Solsiden. Er reversert variegata på denne med grønn stripe i midten av bladene. Har allerede skutt ut en \"pup\"." +
@@ -435,7 +488,7 @@ namespace HousePlants.Data
                 Species = chlorophytumComosumSpecies
             };
             dbContext.Add(plant);
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Arrow head",
                 Description = "Kjøpt på Meny sammen med spider plant. Tror dette er en 'Pixie' eller en 'Holly'. " +
@@ -450,7 +503,7 @@ namespace HousePlants.Data
 
             #region Unidentified
             // todo: identify
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Orangu",
                 Description = "Har hatt denne lengst sammen med tønnekaktusen. Vokser som en superhelt. " +
@@ -461,7 +514,7 @@ namespace HousePlants.Data
                 AquiredDate = DateTime.Parse("26.03.2012", format),
             };
             dbContext.Add(plant);
-            //plant = new Plant
+            //plant = new Plant(testUserId)
             //{
             //    CommonName = "Blåstjerne",
             //    Description = "Kjøpt på Meny.",
@@ -478,7 +531,7 @@ namespace HousePlants.Data
             #endregion
 
             #region Balcony
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Kattemynte, Blue Carpet",
                 AquiredDate = DateTime.Parse("02.06.2021", format),
@@ -486,32 +539,49 @@ namespace HousePlants.Data
             };
             dbContext.Add(plant);
 
-            plant = new Plant
+            plant = new Plant(testUserId)
             {
                 CommonName = "Høstfloks",
                 AquiredDate = DateTime.Parse("02.06.2021", format),
                 Species = new Species("Phlox Sweet Summer Candy")
             };
             dbContext.Add(plant);
-
-
-
-
+            #endregion
+            
             #endregion
 
-            #endregion
+            await dbContext.SaveChangesAsync();
 
-            dbContext.SaveChanges();
-
-            void AddPlant(string commonName, string variety, string species, DateTime? aquiredDate = null, Genus genus = null)
-            {
-
-            }
         }
 
-        private static Plant CreatePlant(string name, DateTime aquiredDate)
+        private static Plant CreatePlant(string name, DateTime aquiredDate, string owner)
         {
-            return new Plant{ CommonName = name, AquiredDate = aquiredDate};
+            return new Plant(owner) { CommonName = name, AquiredDate = aquiredDate};
         }
+
+        public static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider,
+            string uid, string role)
+        {
+            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+
+            if (roleManager == null)
+            {
+                throw new Exception("roleManager null");
+            }
+
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+
+            var userManager = serviceProvider.GetService<UserManager<HousePlantsUser>>();
+
+            var user = await userManager.FindByIdAsync(uid);
+
+            return user == null
+                ? throw new Exception("The testUserPw password was probably not strong enough!")
+                : await userManager.AddToRoleAsync(user, role);
+        }
+
     }
 }

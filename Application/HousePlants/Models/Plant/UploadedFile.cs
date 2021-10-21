@@ -1,5 +1,5 @@
 ﻿using System;
-
+#nullable enable
 namespace HousePlants.Models.Plant
 {
     public class UploadedFile

@@ -1,5 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using HousePlants.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Extensions.Logging;
 
 namespace HousePlants
 {
@@ -31,22 +33,12 @@ namespace HousePlants
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //var loggerFactory = new SerilogLoggerFactory();
-
-            services.AddDbContext<HousePlantsDbContext>(options =>
-                    options.UseNpgsql(
-                        Configuration.GetConnectionString("PostgresConnection"), builder => builder.UseNodaTime()));
-
             services.AddDatabaseDeveloperPageExceptionFilter();
             
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
             services.AddRazorPages().AddFluentValidation();
-            services.AddHealthChecks();
-
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<HousePlantsDbContext>();
-
+            
             services.AddAutoMapper(typeof(Startup));
         }
 
@@ -66,6 +58,7 @@ namespace HousePlants
             app.UseSerilogRequestLogging();
             app.UseCookiePolicy();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -76,3 +69,4 @@ namespace HousePlants
         }
     }
 }
+ 

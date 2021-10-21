@@ -1,4 +1,3 @@
-using HousePlants.Models;
 using HousePlants.Models.Plant;
 using HousePlants.Models.Plant.Taxonomy;
 using NUnit.Framework;
@@ -8,6 +7,7 @@ namespace HousePlants.Tests.Models
     // If only CommonName is set, Title == CommonName
     // If only LatinName  is set, Title == LatinName
     // If both CommonName and LatinName are set, Title == CommonName - LatinName
+    [TestFixture]
     public class PlantTests
     {
 
@@ -19,14 +19,14 @@ namespace HousePlants.Tests.Models
         [Test]
         public void GivenBothCommonNameAndSpeciesAreBlank_WhenCreatingNewPlant_ThenTitleEqualsEmptyString()
         {
-            var plant = new Plant();
+            var plant = new Plant("testUserId");
             Assert.AreEqual(plant.Title, string.Empty);
         }
 
         [Test]
         public void GivenSpeciesIsNull_WhenCommonNameIsSet_ThenTitleEqualsCommonName()
         {
-            var plant = new Plant
+            var plant = new Plant("testUserId")
             {
                 CommonName = "CommonName"
             };
@@ -36,7 +36,7 @@ namespace HousePlants.Tests.Models
         [Test]
         public void GivenCommonNameIsNull_WhenSpeciesIsSet_ThenTitleEqualsNameOfSpecies()
         {
-            var plant = new Plant
+            var plant = new Plant("testUserId")
             {
                 Species = new Species("nameOfSpecies")
             };

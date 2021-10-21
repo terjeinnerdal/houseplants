@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using HousePlants.Data;
-using HousePlants.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,10 +25,11 @@ namespace HousePlants
             "ConnectionStrings:PostgresConnection",
             "ENV_SQL_HOST",
             "ENV_SQL_USERNAME",
-            "ENV_SQL_PASSWORD"
+            "ENV_SQL_PASSWORD",
+            "TestUserPassword"
         }.ToList();
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -49,7 +50,7 @@ namespace HousePlants
             {
                 if (string.IsNullOrEmpty(config[key]))
                 {
-                    throw new ConfigurationException($"{key} must be specified");
+                    throw new ConfigurationException($"An environment variable named {key} must be specified");
                 }
             }
 
@@ -60,25 +61,21 @@ namespace HousePlants
                 var sortedEnvVars = config.AsEnumerable()
                     .Where(envVarKvp => RequiredEnvVars.Any(required => Equals($"\"{required}\"", $"\"{envVarKvp.Key}\"")))
                     .ToImmutableDictionary();
-                foreach (var keyValuePair in sortedEnvVars)
+                foreach ((string key, string value) in sortedEnvVars)
                 {
-                    if (RequiredEnvVars.Any(s=> keyValuePair.Key.Contains(s)))
+                    if (RequiredEnvVars.Any(s=> key.Contains(s)))
                     {
-                        Console.WriteLine($"{keyValuePair.Key}: {keyValuePair.Value}");
+                        Console.WriteLine($"{key}: {value}");
                     }
                 }
             }
 
-            CreateDbIfNotExists();
-            void CreateDbIfNotExists()
+            await CreateDbIfNotExists();
+            async Task CreateDbIfNotExists()
             {
                 try
                 {
-                    var context = services.GetRequiredService<HousePlantsDbContext>();
-                    if(!context.Plants.Any())
-                    {
-                        DbInitializer.Initialize(context);
-                    }
+                    await DbInitializer.Initialize(services);
                 }
                 catch (Exception ex)
                 {
@@ -88,7 +85,7 @@ namespace HousePlants
                 }
             }
 
-            host.Run();
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -12,24 +12,45 @@ using HousePlants.Data;
 using HousePlants.Models;
 using HousePlants.Models.Plant;
 using HousePlants.Models.Plant.Requirements;
+using AutoMapper;
+using HousePlants.Areas.Identity.Data;
 
 namespace HousePlants.Pages.Plants
 {
+    public class EditPlantVm
+    {
+        public Guid Id { get; set; }
+        public string Title { get; }
+        public string Description { get; set; }
+        public string LatinName { get; set; }
+        public string CommonName { get; set; }
+        public DateTime AquiredDate { get; set; }
+        public int MinimumTemperature { get; set; } = 15;
+    }
+
+    public class EditMapperProfile : Profile
+    {
+        public EditMapperProfile()
+        {
+            CreateMap<EditPlantVm, Plant>(MemberList.Destination);
+            CreateMap<Plant, EditPlantVm>(MemberList.Destination);
+        }
+    }
+
     public class EditModel : PageModel
     {
         private readonly HousePlantsDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public EditModel(HousePlantsDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+        private readonly IMapper _mapper;
+        public EditModel(HousePlantsDbContext dbContext, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _dbContext = dbContext;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
-        [BindProperty]
-        public IFormFile UploadedFile { get; set; }
 
-        [BindProperty]
-        public Plant Plant { get; set; }
+        [BindProperty] public IFormFile UploadedFile { get; set; }
+        [BindProperty] public EditPlantVm Plant { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -38,8 +59,8 @@ namespace HousePlants.Pages.Plants
                 return NotFound();
             }
 
-            Plant = await _dbContext.Plants.FirstOrDefaultAsync(m => m.Id == id);
-            
+            Plant = _mapper.Map<EditPlantVm>(await _dbContext.Plants.FirstOrDefaultAsync(m => m.Id == id));
+
             if (Plant == null)
             {
                 return NotFound();
@@ -57,10 +78,10 @@ namespace HousePlants.Pages.Plants
                 return Page();
             }
 
-            _dbContext.Attach(Plant).State = EntityState.Modified;
-            var file = Path.Combine(_webHostEnvironment.ContentRootPath, "uploads", UploadedFile.FileName);
-            await using var fileStream = new FileStream(file, FileMode.Create);
-            await UploadedFile.CopyToAsync(fileStream);
+            _dbContext.Attach(_mapper.Map<Plant>(Plant)).State = EntityState.Modified;
+            // var file = Path.Combine(_webHostEnvironment.ContentRootPath, "uploads", UploadedFile.FileName);
+            // await using var fileStream = new FileStream(file, FileMode.Create);
+            // await UploadedFile.CopyToAsync(fileStream);
 
             try
             {
@@ -87,7 +108,7 @@ namespace HousePlants.Pages.Plants
         public LightRequirement[] GetSelectedLightRequirements(LightRequirement lightRequirement)
         {
             var result = new List<LightRequirement>();
-            foreach(LightRequirement r in Enum.GetValues(typeof(LightRequirement)))
+            foreach (LightRequirement r in Enum.GetValues(typeof(LightRequirement)))
             {
                 if ((lightRequirement & r) != 0)
                 {

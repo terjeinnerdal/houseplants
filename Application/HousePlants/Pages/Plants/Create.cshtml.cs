@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using HousePlants.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,9 +21,7 @@ namespace HousePlants.Pages.Plants
 {
     public sealed class CreatePlantVM
     {
-        [Required, StringLength(128)] 
         public string CommonName { get; set; }
-        [DataType(DataType.MultilineText), StringLength(20000)]
         public string Description { get; set; }
         public LightRequirement LightRequirement { get; set; }
         public WateringTechnique WateringTechnique { get; set; }
